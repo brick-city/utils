@@ -1,0 +1,46 @@
+{
+    "root":true,
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": ["airbnb-base", "plugin:import/recommended", "plugin:import/typescript"], 
+    "plugins": ["import"],
+    "settings": {
+        "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"]
+          },
+
+        "import/core-modules": ["node:test"],
+
+        "import/resolver": {
+            "node":{
+                "extensions":[".js"],
+                "moduleDirectory":["node_modules", "src"]
+            },
+            "typescript": {
+                "alwaysTryTypes": true
+            }
+        }
+    },
+    "rules": {
+        "linebreak-style":["error","windows"],
+        "padded-blocks": ["error", "always", { "allowSingleLineBlocks": true }],
+        "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": false }],
+        "function-paren-newline": ["error", "multiline"],
+        "indent": ["error", 4],
+        "max-len": ["error", { "code": 150 }],
+        "no-shadow": ["error", { "builtinGlobals": false }],
+        "spaced-comment": ["error", "always", { "exceptions": [],"block": { "balanced": true }  }] ,
+        "lines-around-comment": ["error", { "beforeBlockComment": true, "afterBlockComment": false , "allowObjectStart": true}],
+        "import/extensions": ["error", "ignorePackages"]
+    },
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module",
+        "babelOptions": {
+            "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-proposal-private-methods"]
+        }
+    }
+}
