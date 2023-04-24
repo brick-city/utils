@@ -5,14 +5,14 @@ import { leMaskToBits } from './index.js';
 
 describe('leMaskToBits - individual bits', () => {
 
-    it('0b00000000 should be [empty], false, false, false, false, false, false, false, false', () => {
+    it('0b00000000 should be [ , false, false, false, false, false, false, false, false]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
         assert.deepStrictEqual(leMaskToBits(Buffer.from([0b00000000])), [, false, false, false, false, false, false, false, false]);
 
     });
 
-    it('0b00000001 should be [empty], true, false, false, false, false, false, false, false', () => {
+    it('0b00000001 should be [ , true, false, false, false, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
         assert.deepStrictEqual(leMaskToBits(Buffer.from([0b00000001])), [, true, false, false, false, false, false, false, false]);
@@ -143,7 +143,7 @@ describe('leMaskToBits multiple bytes', () => {
     });
 
     // eslint-disable-next-line max-len
-    it('0b00000101, 0b00000001, 0b11111111 should be [empty], true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false,   true, false, true, false, false, false, false, false ', () => {
+    it('0b00000101, 0b00000001, 0b11111111 should be [ , true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, true, false, true, false, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
         assert.deepStrictEqual(leMaskToBits(Buffer.from([0b00000101, 0b00000001, 0b11111111])), [,
