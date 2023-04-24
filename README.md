@@ -39,7 +39,15 @@ leMaskToBits takes a little endian Buffer, and returns a boolean array which sig
 ```javascript
 import { leMaskToBits } from '@brick-city/utility';
 
-let flags = leMaskToBits(buffer);
+let flags = leMaskToBits(Buffer.from([0b00000010]);
+// [, false, true, false, false, false, false, false, false]
+
+let flags = leMaskToBits(Buffer.from([0b01000000]);
+// [, false, false, false, false, false, false, true, false]
+
+let flags = leMaskToBits(Buffer.from([0b00000001, 0b11111111]);
+//[ , true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, true, false, true, false, false, false, false, false ]
+
 
 ```
 ## Support
