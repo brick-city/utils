@@ -1,142 +1,142 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { bufferToBooleanLE } from './index.js';
+import { bitmaskToBooleanLE } from './index.js';
 
-describe('bufferToBooleanLE - individual bits', () => {
+describe('bitmaskToBooleanLE - individual bits', () => {
 
     it('0b00000000 should be [ false, false, false, false, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00000000])), [false, false, false, false, false, false, false, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00000000])), [false, false, false, false, false, false, false, false]);
 
     });
 
     it('0b00000001 should be [true, false, false, false, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00000001])), [true, false, false, false, false, false, false, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00000001])), [true, false, false, false, false, false, false, false]);
 
     });
 
     it('0b00000010 should be [false, true, false, false, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00000010])), [false, true, false, false, false, false, false, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00000010])), [false, true, false, false, false, false, false, false]);
 
     });
 
     it('0b00000100 should be [false, false, true, false, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00000100])), [false, false, true, false, false, false, false, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00000100])), [false, false, true, false, false, false, false, false]);
 
     });
 
     it('0b00001000 should be [false, false, false, true, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00001000])), [false, false, false, true, false, false, false, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00001000])), [false, false, false, true, false, false, false, false]);
 
     });
 
     it('0b00010000 should be [false, false, false, false, true, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00010000])), [false, false, false, false, true, false, false, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00010000])), [false, false, false, false, true, false, false, false]);
 
     });
 
     it('0b00100000 should be [false, false, false, false, false, true, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00100000])), [false, false, false, false, false, true, false, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00100000])), [false, false, false, false, false, true, false, false]);
 
     });
 
     it('0b01000000 should be [false, false, false, false, false, false, true, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b01000000])), [false, false, false, false, false, false, true, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b01000000])), [false, false, false, false, false, false, true, false]);
 
     });
 
     it('0b10000000 should be [false, false, false, false, false, false, false, true ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b10000000])), [false, false, false, false, false, false, false, true]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b10000000])), [false, false, false, false, false, false, false, true]);
 
     });
 
 });
 
-describe('bufferToBooleanLE multiple bits', () => {
+describe('bitmaskToBooleanLE multiple bits', () => {
 
     it('0b11111111 should be [true, true, true, true, true, true, true, true ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b11111111])), [true, true, true, true, true, true, true, true]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b11111111])), [true, true, true, true, true, true, true, true]);
 
     });
 
     it('0b11111101 should be [true, false, true, true, true, true, true, true ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b11111101])), [true, false, true, true, true, true, true, true]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b11111101])), [true, false, true, true, true, true, true, true]);
 
     });
 
     it('0b11111011 should be [true, true, false, true, true, true, true, true ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b11111011])), [true, true, false, true, true, true, true, true]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b11111011])), [true, true, false, true, true, true, true, true]);
 
     });
 
     it('0b11110111 should be [true, true, true, false, true, true, true, true ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b11110111])), [true, true, true, false, true, true, true, true]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b11110111])), [true, true, true, false, true, true, true, true]);
 
     });
 
     it('0b11101111 should be [true, true, true, true, false, true, true, true ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b11101111])), [true, true, true, true, false, true, true, true]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b11101111])), [true, true, true, true, false, true, true, true]);
 
     });
 
     it('0b11011111 should be [true, true, true, true, true, false, true, true ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b11011111])), [true, true, true, true, true, false, true, true]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b11011111])), [true, true, true, true, true, false, true, true]);
 
     });
 
     it('0b10111111 should be [true, true, true, true, true, true, false, true ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b10111111])), [true, true, true, true, true, true, false, true]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b10111111])), [true, true, true, true, true, true, false, true]);
 
     });
 
     it('0b01111111 should be [true, true, true, true, true, true, true, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b01111111])), [true, true, true, true, true, true, true, false]);
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b01111111])), [true, true, true, true, true, true, true, false]);
 
     });
 
 });
 
-describe('bufferToBooleanLE multiple bytes', () => {
+describe('bitmaskToBooleanLE multiple bytes', () => {
 
     // eslint-disable-next-line max-len
     it('0b00000001, 0b11111111 should be [true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00000001, 0b11111111])), [
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00000001, 0b11111111])), [
             true, true, true, true, true, true, true, true,
             true, false, false, false, false, false, false, false]);
 
@@ -146,7 +146,7 @@ describe('bufferToBooleanLE multiple bytes', () => {
     it('0b00000101, 0b00000001, 0b11111111 should be [true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, true, false, true, false, false, false, false, false ]', () => {
 
         // eslint-disable-next-line no-sparse-arrays
-        assert.deepStrictEqual(bufferToBooleanLE(Buffer.from([0b00000101, 0b00000001, 0b11111111])), [
+        assert.deepStrictEqual(bitmaskToBooleanLE(Buffer.from([0b00000101, 0b00000001, 0b11111111])), [
             true, true, true, true, true, true, true, true,
             true, false, false, false, false, false, false, false,
             true, false, true, false, false, false, false, false,

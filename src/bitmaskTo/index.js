@@ -9,9 +9,10 @@
  *
  * @param {Buffer} buffer The buffer to transform to bits
  * @returns {Array<boolean>} An array of booleans corresponding to the bits of the buffer
+ *
  */
 
-export const bufferToBooleanLE = (buffer) => {
+export const bitmaskToBooleanLE = (buffer) => {
 
     /**
      * @type {Array<boolean>}
@@ -47,9 +48,10 @@ export const bufferToBooleanLE = (buffer) => {
  *
  * @param {Buffer} buffer The mask (buffer) to check the bits on
  * @returns {Array<boolean>} An array of booleans corresponding to the bits of the buffer
+ *
  */
 
-export const bufferToBooleanBE = (buffer) => {
+export const bitmaskToBooleanBE = (buffer) => {
 
     /**
      * @type {Array<boolean>}
@@ -84,9 +86,10 @@ export const bufferToBooleanBE = (buffer) => {
  *
  * @param {Buffer} buffer The buffer to transform to bits
  * @returns {Array<number>} An array of booleans corresponding to the bits of the buffer
+ *
  */
 
-export const bufferToBitsLE = (buffer) => {
+export const bitmaskToBitsLE = (buffer) => {
 
     /**
      * @type {Array<number>}
@@ -122,9 +125,10 @@ export const bufferToBitsLE = (buffer) => {
  *
  * @param {Buffer} buffer The mask (buffer) to check the bits on
  * @returns {Array<number>} An array of booleans corresponding to the bits of the buffer
+ *
  */
 
-export const bufferToBitsBE = (buffer) => {
+export const bitmaskToBitsBE = (buffer) => {
 
     /**
      * @type {Array<number>}
