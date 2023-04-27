@@ -1,4 +1,4 @@
-export * from './src/maskToBits/index.js';
+export * from './src/bufferToBits/index.js';
 export * from './src/deepFreeze/index.js';
 export * from './src/isUndefinedOrNull/index.js';
 export * from './src/isRegex/index.js';
