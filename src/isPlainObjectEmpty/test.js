@@ -47,4 +47,16 @@ describe('isPlainObjectEmpty', () => {
 
     });
 
+    it('55 is not an empty plain object', () => {
+
+        assert.strictEqual(isPlainObjectEmpty(55), false);
+
+    });
+
+    it("'Test' is not an empty plain object", () => {
+
+        assert.strictEqual(isPlainObjectEmpty('Test'), false);
+
+    });
+
 });

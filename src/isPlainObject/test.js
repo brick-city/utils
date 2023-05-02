@@ -47,4 +47,16 @@ describe('isPlainObject', () => {
 
     });
 
+    it('55 is not a plain object', () => {
+
+        assert.strictEqual(isPlainObject(55), false);
+
+    });
+
+    it("'Test' is not a plain object", () => {
+
+        assert.strictEqual(isPlainObject('Test'), false);
+
+    });
+
 });

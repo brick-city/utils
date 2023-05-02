@@ -11,7 +11,7 @@ import { isPlainObject } from '../isPlainObject/index.js';
  *
  *  ```javascript
  *
- *  import { isEmptyPlainObject } from '@brick-city/utility';
+ *  import { isPlainObjectEmpty } from '@brick-city/utility';
  *
  *  isPlainObjectEmpty( {} ); // true
  *  isPlainObjectEmpty( { aa:  3 } ); //false

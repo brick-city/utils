@@ -33,7 +33,8 @@
         "no-shadow": ["error", { "builtinGlobals": false }],
         "spaced-comment": ["error", "always", { "exceptions": [],"block": { "balanced": true }  }] ,
         "lines-around-comment": ["error", { "beforeBlockComment": true, "afterBlockComment": false , "allowObjectStart": true}],
-        "import/extensions": ["error", "ignorePackages"]
+        "import/extensions": ["error", "ignorePackages"],
+        "no-plusplus":["error", {"allowForLoopAfterthoughts": true}]
     },
     "parser": "@babel/eslint-parser",
     "parserOptions": {

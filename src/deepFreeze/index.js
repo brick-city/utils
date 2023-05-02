@@ -11,6 +11,8 @@
 
 export const deepFreeze = (obj) => {
 
+    if (typeof obj !== 'object') { throw new TypeError('Expecting an object'); }
+
     Object.keys(obj).forEach((prop) => {
 
         if (!Buffer.isBuffer(obj[prop]) && typeof obj[prop] === 'object') deepFreeze(obj[prop]);

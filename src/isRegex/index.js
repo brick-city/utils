@@ -2,7 +2,7 @@
 
 /**
  *
- * Checks to see if the passed object is a Regex
+ * Checks to see if the passed object is a regular expression
  *
  * @param {Object} obj Object to check
  * @returns {boolean} Returns true if object is a Regex, otherwise false
