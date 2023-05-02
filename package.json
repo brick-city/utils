@@ -1,5 +1,5 @@
 {
-  "name": "@brick-city/utility",
+  "name": "@brick-city/utils",
   "version": "0.0.0",
   "description": "A collection of utilities used by brick-city modules",
   "main": "index.js",
