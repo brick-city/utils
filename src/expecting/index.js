@@ -4,6 +4,11 @@ import assert from 'node:assert';
 /**
  *
  * Returns a function that when executed compares the output of the provided function
+ * to the expected values.
+ *
+ * It wraps these arguments and expected values in a closure so the when this test is run
+ * the values are available.
+ *
  *
  * @param {function} fn Function to test
  * @param {*} expected Expected Value
