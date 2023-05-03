@@ -81,7 +81,6 @@ isRegex returns a boolean that indicates if the object is a regular expression.
 ```javascript
 import { isRegex } from '@brick-city/util';
 
-
 isRegex( new RegExp('') ); //true
 isRegex( new RegExp('ab+c') ); //true
 isRegex( new RegExp(/.+/ ) ); //true
@@ -119,11 +118,8 @@ mssqlCdcUpdateMaskToBooleanArray takes a mssql change data capture update mask, 
 import { mssqlCdcUpdateMaskToBooleanArray:updateMaskToBoolean } from '@brick-city/util';
 
 updateMaskToBoolean(Buffer.from([0b00000010]); // [, false, true, false, false, false, false, false, false]
-
 updateMaskToBoolean(Buffer.from([0b01000000]); // [, false, false, false, false, false, false, true, false]
-
 updateMaskToBoolean(Buffer.from([0b00000001, 0b11111111]); // [ , true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, true, false, true, false, false, false, false, false ]
-
 updateMaskToBoolean(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [,
 //                                                                          true, true, true, true, true, true, true, true,
 //                                                                          true, false, false, false, false, false, false, false,
@@ -141,13 +137,11 @@ mssqlCdcUpdateMaskToBitArray takes a mssql change data capture update mask, and 
 import { mssqlCdcUpdateMaskTobitArray:updateMaskToBit } from '@brick-city/util';
 
 updateMaskToBit(Buffer.from([0b00000010]); // [, 0, 1, 0, 0, 0, 0, 0, 0]
-
 updateMaskToBit(Buffer.from([0b01000000]); // [, 0, 0, 0, 0, 0, 0, 1, 0]
-
 updateMaskToBit(Buffer.from([0b00000001, 0b11111111]); // [, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0]
-
 updateMaskToBit(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0]
 // Notice the bytes are reversed, the last bytes bits appear first
+```
 
 ### `zeroPaddedBinary(integer:number):string`
 
