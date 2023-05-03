@@ -19,9 +19,10 @@ npm install --save @brick-city/util
 
 ## Usage
 
-- Deep freeze an object and avoid buffers [deepfreeze](#deepfreezeobjobjectvoid)
-- Check if an object is a plain object [isPlainObject](#isplainobjectobjobjectboolean)
-- Check if an object is a plain object, and is empty [isPlainObjectEmpty](#isplainobjectemptyobjobjectboolean)
+- [isPlainObject](#isplainobjectobjobjectboolean) Check if an object is a plain object 
+- [isPlainObjectEmpty](#isplainobjectemptyobjobjectboolean) Check if an object is a plain object, and is empty 
+- [deepfreeze](#deepfreezeobjobjectvoid) Deep freeze an object and avoid buffers 
+
 
 ### `isPlainObject(obj:Object):boolean`
 
