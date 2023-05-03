@@ -59,4 +59,18 @@ describe('isPlainObjectEmpty', () => {
 
     });
 
+    it('new Object() is an empty plain object', () => {
+
+        // eslint-disable-next-line no-new-object
+        assert.strictEqual(isPlainObjectEmpty(new Object()), true);
+
+    });
+
+    it('Object.create(null) is an empty plain object', () => {
+
+        // eslint-disable-next-line no-new-object
+        assert.strictEqual(isPlainObjectEmpty(Object.create(null)), true);
+
+    });
+
 });

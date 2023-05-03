@@ -10,7 +10,7 @@
  *
  */
 
-export function zeroPaddedBinary(integer) {
+export const zeroPaddedBinary = (integer) => {
 
     if (typeof integer !== 'number') { throw new TypeError('Expecting a number'); }
 
@@ -18,4 +18,4 @@ export function zeroPaddedBinary(integer) {
 
     return `0b${'0'.repeat((8 - (s.length % 8)) % 8)}${s}`;
 
-}
+};

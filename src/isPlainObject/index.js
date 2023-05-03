@@ -24,7 +24,7 @@
  *
  */
 
-export function isPlainObject(obj) {
+export const isPlainObject = (obj) => {
 
     if (!obj || typeof obj !== 'object') return false;
 
@@ -32,4 +32,4 @@ export function isPlainObject(obj) {
 
     return !proto || proto.constructor.name === 'Object';
 
-}
+};

@@ -21,8 +21,4 @@ import { isPlainObject } from '../isPlainObject/index.js';
  *
  */
 
-export function isPlainObjectEmpty(obj) {
-
-    return isPlainObject(obj) && !Object.values(obj).length;
-
-}
+export const isPlainObjectEmpty = (obj) => isPlainObject(obj) && !Object.values(obj).length;

@@ -1,5 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-
 /**
  *
  * Deepfreezes an object, and avoids Buffer types

@@ -4,13 +4,9 @@
  *
  * Checks to see if the passed object is a regular expression
  *
- * @param {Object} obj Object to check
+ * @param {any} value Object to check
  * @returns {boolean} Returns true if object is a Regex, otherwise false
  *
  */
 
-export function isRegex(obj) {
-
-    return Object.prototype.toString.call(obj) === '[object RegExp]';
-
-}
+export const isRegex = (value) => Object.prototype.toString.call(value) === '[object RegExp]';

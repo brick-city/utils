@@ -1,7 +1,7 @@
 /* eslint-disable no-sparse-arrays */
+import assert from 'node:assert';
 import { describe, it } from 'node:test';
-import { updateMaskToBooleanArray, updateMaskToBitArray } from './index.js';
-import { expecting } from '../expecting/index.js';
+import { mssqlCdcUpdateMaskToBooleanArray, mssqlCdcUpdateMaskToBitArray } from './index.js';
 import { zeroPaddedBinary } from '../zeroPaddedBinary/index.js';
 
 /** @type {[number[], boolean[]|number[]][]} */
@@ -59,7 +59,11 @@ describe('updateMaskToBooleanArray - individual bits', () => {
 
     tests.forEach((t) => {
 
-        it(`${zeroPaddedBinary(t[0][0])} should resolve to ${arrayAsString(t[1])}`, expecting(updateMaskToBooleanArray, t[1], Buffer.from(t[0])));
+        it(
+            `${t[0].reduce((i, v) => `${i + zeroPaddedBinary(v)} `, '')} should resolve to ${arrayAsString(t[1])}`,
+            () => { assert.deepStrictEqual(mssqlCdcUpdateMaskToBooleanArray(Buffer.from(t[0])), t[1]); },
+
+        );
 
     });
 
@@ -80,7 +84,11 @@ describe('updateMaskToBooleanArray multiple bits', () => {
 
     tests.forEach((t) => {
 
-        it(`${zeroPaddedBinary(t[0][0])} should resolve to ${arrayAsString(t[1])}`, expecting(updateMaskToBooleanArray, t[1], Buffer.from(t[0])));
+        it(
+            `${t[0].reduce((i, v) => `${i + zeroPaddedBinary(v)} `, '')} should resolve to ${arrayAsString(t[1])}`,
+            () => { assert.deepStrictEqual(mssqlCdcUpdateMaskToBooleanArray(Buffer.from(t[0])), t[1]); },
+
+        );
 
     });
 
@@ -101,7 +109,8 @@ describe('updateMaskToBooleanArray multiple bytes', () => {
 
         it(
             `${t[0].reduce((i, v) => `${i + zeroPaddedBinary(v)} `, '')} should resolve to ${arrayAsString(t[1])}`,
-            expecting(updateMaskToBooleanArray, t[1], Buffer.from(t[0])),
+            () => { assert.deepStrictEqual(mssqlCdcUpdateMaskToBooleanArray(Buffer.from(t[0])), t[1]); },
+
         );
 
     });
@@ -127,7 +136,8 @@ describe('updateMaskToBitArray - individual bits', () => {
 
         it(
             `${t[0].reduce((i, v) => `${i + zeroPaddedBinary(v)} `, '')} should resolve to ${arrayAsString(t[1])}`,
-            expecting(updateMaskToBitArray, t[1], Buffer.from(t[0])),
+            () => { assert.deepStrictEqual(mssqlCdcUpdateMaskToBitArray(Buffer.from(t[0])), t[1]); },
+
         );
 
     });
@@ -149,7 +159,11 @@ describe('updateMaskToBitArray multiple bits', () => {
 
     tests.forEach((t) => {
 
-        it(`${zeroPaddedBinary(t[0][0])} should resolve to ${arrayAsString(t[1])}`, expecting(updateMaskToBitArray, t[1], Buffer.from(t[0])));
+        it(
+            `${t[0].reduce((i, v) => `${i + zeroPaddedBinary(v)} `, '')} should resolve to ${arrayAsString(t[1])}`,
+            () => { assert.deepStrictEqual(mssqlCdcUpdateMaskToBitArray(Buffer.from(t[0])), t[1]); },
+
+        );
 
     });
 
@@ -166,7 +180,8 @@ describe('updateMaskToBitArray multiple bytes', () => {
 
         it(
             `${t[0].reduce((i, v) => `${i + zeroPaddedBinary(v)} `, '')} should resolve to ${arrayAsString(t[1])}`,
-            expecting(updateMaskToBitArray, t[1], Buffer.from(t[0])),
+            () => { assert.deepStrictEqual(mssqlCdcUpdateMaskToBitArray(Buffer.from(t[0])), t[1]); },
+
         );
 
     });

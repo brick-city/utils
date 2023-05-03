@@ -9,8 +9,4 @@
  *
  */
 
-export function isUndefinedOrNull(value) {
-
-    return value === null || value === undefined;
-
-}
+export const isUndefinedOrNull = (value) => value === null || value === undefined;
