@@ -1,4 +1,4 @@
-# public-service
+# utility
 
 A collection of utilities that are used by brick-city packages.
 
@@ -13,11 +13,13 @@ A collection of utilities that are used by brick-city packages.
 ## Installation
 
 ```
-npm install --save @brick-city/utility
+npm install --save @brick-city/util
 ```
 
 
 ## Usage
+
+-[deepfreeze](#deepfreezeobjobjectvoid)
 
 ### General
 
