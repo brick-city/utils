@@ -19,7 +19,7 @@ npm install --save @brick-city/util
 
 ## Usage
 
--[deepfreeze](#deepfreezeobjobjectvoid)
+- Deepfreeze an object and avoid buffers [deepfreeze](#deepfreezeobjobjectvoid)
 
 ### General
 
