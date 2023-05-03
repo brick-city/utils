@@ -4,6 +4,7 @@ on:
     types: [created]
 jobs:
   check-out-code:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3name
