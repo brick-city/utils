@@ -158,14 +158,6 @@ zeroPaddedBinary(262) // '0b0000000100000110'
 zeroPaddedBinary(7) // '0b00000111'
 
 ```
-
-
-
-
-
-
-
-```
 ## Support
 
 Please [open an issue](https://github.com/brick-city/utils/issues/new) for support.
