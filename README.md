@@ -18,7 +18,7 @@ npm install --save @brick-city/utils
 
 
 ## Usage
-
+- [arrayToString](#arraytostringarrstring) Nicely format an array for display
 - [deepfreeze](#deepfreezeobjobjectvoid) Deep freeze an object and avoid buffers
 - [isPlainObject](#isplainobjectobjobjectboolean) Check if an object is a plain object 
 - [isPlainObjectEmpty](#isplainobjectemptyobjobjectboolean) Check if an object is a plain object, and is empty
@@ -28,6 +28,22 @@ npm install --save @brick-city/utils
 - [mssqlCdcUpdateMaskToBitArray]() Converts an mssql change data capture update mask to an array of bits
 - [zeroPaddedBinary](#zeropaddedbinaryintegernumberstring) Nicely format a number as a binary
 
+### `arrayToString(arr:*[]):string`
+
+arrayToString displays an array as you would expect it to look in code. If the element is undefined, only a comma is returned, if it is a string its wrapped in quotes. Simply calls .toString on each element
+
+Throws a type error if passed something other than an array.
+
+```javascript
+import { arrayToString } from '@brick-city/util';
+
+arrayToString([]) // []
+arrayToString([,]) // [ ,]
+arrayToString([,,]) // [ , ,]
+arrayToString([5,,5]) // [ 5, , 5]
+arrayToString([1, 'abc', 5]) // [ 1, 'abc', 5]
+
+```
 
 ### `deepFreeze(obj:Object):void`
 
@@ -119,7 +135,7 @@ import { mssqlCdcUpdateMaskToBooleanArray:updateMaskToBoolean } from '@brick-cit
 
 updateMaskToBoolean(Buffer.from([0b00000010]); // [, false, true, false, false, false, false, false, false]
 updateMaskToBoolean(Buffer.from([0b01000000]); // [, false, false, false, false, false, false, true, false]
-updateMaskToBoolean(Buffer.from([0b00000001, 0b11111111]); // [ , true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, true, false, true, false, false, false, false, false ]
+updateMaskToBoolean(Buffer.from([0b00000001, 0b11111111]); // [, true, true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, true, false, true, false, false, false, false, false ]
 updateMaskToBoolean(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [,
 //                                                                          true, true, true, true, true, true, true, true,
 //                                                                          true, false, false, false, false, false, false, false,
