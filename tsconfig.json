@@ -1,17 +1,18 @@
 {
 
     "compilerOptions": {
+        "module": "NodeNext",
         "moduleResolution": "nodenext",
         "checkJs": true,
         "allowJs": true,
         "declaration":true,
         "emitDeclarationOnly": true,
         "declarationMap": true,
-        "outDir": "types",
         "noImplicitAny": true,
         "noImplicitReturns": false,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "outDir": "./types",
     },
-    "include": ["src/**/*", "*.js", "test/test.js"],
-    "exclude": ["node_modules", "types"]
+    "include": ["src/**/*.js", "*.js" ],
+    "exclude": ["node_modules", "types", "src/**/test.js", "*.d.ts"]
 }

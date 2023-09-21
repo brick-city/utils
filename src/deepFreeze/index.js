@@ -3,8 +3,10 @@
  *
  * Deepfreezes an object, and avoids Buffer types
  *
- * @param {Object.<string, any>} obj
- * @returns {void}
+ * @template {Object.<string, any>} T
+ *
+ * @param {T} obj
+ * @returns {T}
  *
  */
 
@@ -19,5 +21,7 @@ export const deepFreeze = (obj) => {
     });
 
     Object.freeze(obj);
+
+    return obj;
 
 };

@@ -1,4 +1,4 @@
-export function deepFreeze(obj: {
+export function deepFreeze<T extends {
     [x: string]: any;
-}): void;
+}>(obj: T): T;
 //# sourceMappingURL=index.d.ts.map
