@@ -45,9 +45,9 @@ arrayToString([1, 'abc', 5]) // [ 1, 'abc', 5]
 
 ```
 
-### `deepFreeze(obj:Object):void`
+### `deepFreeze(obj:Object):Object`
 
-deepFreeze takes an object and recursively walks down the object's own properties and deepFreeze(s) any objects it finds, and then freezes the object. Buffers are skipped. This was a drawback of other "deepFreeze" type functions which are tripped up by Buffers.
+deepFreeze takes an object and recursively walks down the object's own properties and deepFreeze(s) any objects it finds, and then freezes the object. Buffers are skipped. This was a drawback of other "deepFreeze" type functions which are tripped up by Buffers. Returns a reference to the originally passed object.
 
 ```javascript
 import { deepFreeze } from '@brick-city/util';
