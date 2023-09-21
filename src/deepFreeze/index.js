@@ -1,7 +1,9 @@
+import { isPlainObject } from '../isPlainObject/index.js';
+
 /* eslint-disable import/prefer-default-export */
 /**
  *
- * Deepfreezes an object, and avoids Buffer types
+ * @description Deepfreezes a plain object, and avoids Buffer types and other non-plain objects
  *
  * @template {Object.<string, any>} T
  *
@@ -12,11 +14,11 @@
 
 export const deepFreeze = (obj) => {
 
-    if (typeof obj !== 'object') { throw new TypeError('Expecting an object'); }
+    if (!isPlainObject(obj)) { throw new TypeError('Expecting a plain object'); }
 
     Object.keys(obj).forEach((prop) => {
 
-        if (!Buffer.isBuffer(obj[prop]) && typeof obj[prop] === 'object') deepFreeze(obj[prop]);
+        if (isPlainObject(obj[prop])) deepFreeze(obj[prop]);
 
     });
 
