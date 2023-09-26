@@ -1,6 +1,6 @@
 /**
  *
- * An object that implements the same interface as the fastify logger,
+ * An object that implements the same interface as a pino logger,
  * but does nothing.
  *
  */

@@ -159,6 +159,18 @@ updateMaskToBit(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [, 1, 1, 1
 // Notice the bytes are reversed, the last bytes bits appear first
 ```
 
+### `noopLogger`
+
+noopLogger is an object with all pino logger logging methods defined, but do nothing.
+
+```javascript
+import { noopLogger } from '@brick-city/util';
+
+// Now use it in places where a pino logger is needed, but
+// none was passed.
+
+```
+
 ### `zeroPaddedBinary(integer:number):string`
 
 zeroPaddedBinary returns the integer as a binary string padded with zeros to a length of multiples of 8, and prefixed with '0b'. Throws with a TypeError if the value passed is not a number. The value is rounded down to an integer if it is a float.

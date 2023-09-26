@@ -6,4 +6,5 @@ export * from "./src/isPlainObjectEmpty/index.js";
 export * from "./src/zeroPaddedBinary/index.js";
 export * from "./src/deepFreeze/index.js";
 export * from "./src/arrayToString/index.js";
+export * from "./src/noopLogger/index.js";
 //# sourceMappingURL=index.d.ts.map

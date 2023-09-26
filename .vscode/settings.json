@@ -6,6 +6,7 @@
     "fastify",
     "linebreak",
     "paren",
+    "pino",
     "plusplus"
 ]
 }
