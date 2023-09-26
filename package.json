@@ -1,6 +1,6 @@
 {
   "name": "@brick-city/utils",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "A collection of utilities used by brick-city modules",
   "main": "index.js",
   "type": "module",
@@ -23,5 +23,8 @@
     "eslint-plugin-import": "^2.25.3",
     "typescript": "^4.9.4"
   },
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "dependencies": {
+    "callsites": "^4.1.0"
+  }
 }

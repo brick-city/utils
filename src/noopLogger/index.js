@@ -14,6 +14,9 @@ export const noopLogger = {
     info: () => {},
     debug: () => {},
     trace: () => {},
+    silent: () => {},
     child: function child() { return this; },
+    level: Infinity,
+    isLevelEnabled: () => false,
 
 };

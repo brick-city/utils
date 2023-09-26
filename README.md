@@ -126,6 +126,25 @@ isUndefinedOrNull(7) // false
 
 ```
 
+### `traceLogger(logger:logger):function`
+
+Pass a pinot styled logger (needs a 'trace' method, and isLevelEnabled method) to this function and it 
+will return a function that logs a trace message. If the logger does not have a trace method, or the 
+log level is not 'trace', it will return a function that does nothing.
+
+The trace message will include the file name, line number, column number, function name, and method name.
+
+```javascript
+import { traceLogger } from '@brick-city/util';
+
+trace = traceLogger(pinoInstance);
+
+// Now drop these wherever you need to trace the logic
+
+trace()
+
+```
+
 ### `mssqlCdcUpdateMaskToBooleanArray(updateMask:Buffer):Array<boolean>`
 
 mssqlCdcUpdateMaskToBooleanArray takes a mssql change data capture update mask, and returns a boolean array which signifies which column ordinal bits are set.  The first column ordinal in mssql change data capture is 1, so the zeroth array element is empty.
