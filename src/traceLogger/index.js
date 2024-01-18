@@ -17,25 +17,22 @@ export const traceLogger = (logger) => {
 
     if (logger && logger?.isLevelEnabled('trace') && (typeof logger?.trace === 'function')) {
 
-        return function logTrace() {
+        /**
+         * @param {string} [message]
+         */
+
+        return function logTrace(message) {
 
             const stack = callsites();
-
             const caller = stack[1];
-
             const file = caller.getFileName();
-
             const lineNumber = caller.getLineNumber();
-
             const columnNumber = caller.getColumnNumber();
-
             const functionName = caller.getFunctionName();
-
             const methodName = caller.getMethodName();
+            const traceMessage = `Trace: ${message ?? ''} File:${file}:${lineNumber}:${columnNumber} Function:${functionName} Method:${methodName}`;
 
-            const message = `trace: ${file}:${lineNumber}:${columnNumber} ${functionName} method:${methodName}`;
-
-            logger.trace(message);
+            logger.trace(traceMessage);
 
         };
 
