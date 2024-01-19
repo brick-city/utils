@@ -21,4 +21,20 @@ export namespace noopLogger {
     let level: number;
     function isLevelEnabled(): boolean;
 }
+export type PinoLogFn = {
+    (obj: unknown, msg?: string, ...args: any[]): void;
+    (msg: string, ...args: any[]): void;
+};
+export type PinoLogger = {
+    fatal: PinoLogFn;
+    error: PinoLogFn;
+    warn: PinoLogFn;
+    info: PinoLogFn;
+    debug: PinoLogFn;
+    trace: PinoLogFn;
+    silent: PinoLogFn;
+    child: () => PinoLogger;
+    level: number;
+    isLevelEnabled: (arg0: string) => boolean;
+};
 //# sourceMappingURL=index.d.ts.map

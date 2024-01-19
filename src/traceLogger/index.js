@@ -2,13 +2,13 @@ import callsites from 'callsites';
 
 /**
  *
- * Pass a pinot logger to this function and it will return a function that logs a trace message.
+ * Pass a pinot style logger to this function and it will return a function that logs a trace message.
  * If the logger does not have a trace method, or the log level is not 'trace', it will return
  * a function that does nothing.
  *
  * The trace message will include the file name, line number, column number, function name, and method name.
  *
- * @param {*} logger
+ * @param {(import ('../noopLogger/index.js').PinoLogger)} logger
  * @returns {function} A function that logs a trace message
  *
  */
