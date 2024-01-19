@@ -18,7 +18,7 @@ export namespace noopLogger {
         level: number;
         isLevelEnabled: () => boolean;
     };
-    const level: number;
+    let level: number;
     function isLevelEnabled(): boolean;
 }
 //# sourceMappingURL=index.d.ts.map
