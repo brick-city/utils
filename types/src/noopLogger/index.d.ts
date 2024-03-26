@@ -33,7 +33,7 @@ export type PinoLogger = {
     debug: PinoLogFn;
     trace: PinoLogFn;
     silent: PinoLogFn;
-    child: () => PinoLogger;
+    child: (arg0: [object]) => PinoLogger;
     level: number;
     isLevelEnabled: (arg0: string) => boolean;
 };

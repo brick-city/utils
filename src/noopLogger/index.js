@@ -14,7 +14,7 @@
  * @property {PinoLogFn} debug
  * @property {PinoLogFn} trace
  * @property {PinoLogFn} silent
- * @property {function(): PinoLogger} child
+ * @property {function([object]): PinoLogger} child
  * @property {number} level
  * @property {function(string): boolean} isLevelEnabled
  */
