@@ -8,4 +8,5 @@ export * from "./src/deepFreeze/index.js";
 export * from "./src/arrayToString/index.js";
 export * from "./src/noopLogger/index.js";
 export * from "./src/traceLogger/index.js";
+export * from "./src/acHelper/index.js";
 //# sourceMappingURL=index.d.ts.map

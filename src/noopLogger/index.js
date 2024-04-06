@@ -6,6 +6,10 @@
  */
 
 /**
+ * @typedef {Object.<string, *>} GenericObject
+ */
+
+/**
  * @typedef {Object} PinoLogger
  * @property {PinoLogFn} fatal
  * @property {PinoLogFn} error
@@ -14,7 +18,7 @@
  * @property {PinoLogFn} debug
  * @property {PinoLogFn} trace
  * @property {PinoLogFn} silent
- * @property {function([Object.<string, any>]): PinoLogger} child
+ * @property {function(GenericObject): PinoLogger} child
  * @property {number} level
  * @property {function(string): boolean} isLevelEnabled
  */

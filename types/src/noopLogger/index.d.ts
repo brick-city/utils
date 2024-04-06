@@ -25,6 +25,9 @@ export type PinoLogFn = {
     (obj: unknown, msg?: string, ...args: any[]): void;
     (msg: string, ...args: any[]): void;
 };
+export type GenericObject = {
+    [x: string]: any;
+};
 export type PinoLogger = {
     fatal: PinoLogFn;
     error: PinoLogFn;
@@ -33,7 +36,7 @@ export type PinoLogger = {
     debug: PinoLogFn;
     trace: PinoLogFn;
     silent: PinoLogFn;
-    child: (arg0: [object]) => PinoLogger;
+    child: (arg0: GenericObject) => PinoLogger;
     level: number;
     isLevelEnabled: (arg0: string) => boolean;
 };
