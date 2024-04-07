@@ -1,6 +1,6 @@
 {
   "name": "@brick-city/utils",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A collection of utilities used by brick-city modules",
   "main": "index.js",
   "type": "module",
