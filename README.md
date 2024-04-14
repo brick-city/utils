@@ -24,9 +24,10 @@ npm install --save @brick-city/utils
 - [isPlainObjectEmpty](#isplainobjectemptyobjobjectboolean) Check if an object is a plain object, and is empty
 - [isRegex](#isregexobjanyboolean) Check if the passed value is a regular expression  
 - [isUndefinedOrNull](#isundefinedornullvalueanyboolean) Check for an undefined or null value
-- [mssqlCdcUpdateMaskToBooleanArray]() Converts an mssql change data capture update mask to an array of boolean 
+- [mssqlCdcUpdateMaskToBooleanArray](#mssqlCdcUpdateMaskToBooleanArray) Converts an mssql change data capture update mask to an array of boolean 
 - [mssqlCdcUpdateMaskToBitArray]() Converts an mssql change data capture update mask to an array of bits
-- [traceLogger](#traceLogger) Creates a function that generates a trace entry in the log
+- [noopLogger](#noopLogger) A pino structured no-op logger
+- [traceLogger](#traceLogger) Generates trace messages, and posts them to the provided logger
 - [zeroPaddedBinary](#zeropaddedbinaryintegernumberstring) Nicely format a number as a binary
 
 ### `arrayToString(arr:*[]):string`
@@ -127,25 +128,6 @@ isUndefinedOrNull(7) // false
 
 ```
 
-### `traceLogger(logger:logger):function`
-
-Pass a pinot styled logger (needs a 'trace' method, and isLevelEnabled method) to this function and it 
-will return a function that logs a trace message. If the logger does not have a trace method, or the 
-log level is not 'trace', it will return a function that does nothing.
-
-The trace message will include the file name, line number, column number, function name, and method name.
-
-```javascript
-import { traceLogger } from '@brick-city/util';
-
-trace = traceLogger(pinoInstance);
-
-// Now drop these wherever you need to trace the logic
-
-trace()
-
-```
-
 ### `mssqlCdcUpdateMaskToBooleanArray(updateMask:Buffer):Array<boolean>`
 
 mssqlCdcUpdateMaskToBooleanArray takes a mssql change data capture update mask, and returns a boolean array which signifies which column ordinal bits are set.  The first column ordinal in mssql change data capture is 1, so the zeroth array element is empty.
@@ -165,7 +147,7 @@ updateMaskToBoolean(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [,
 ```
 
 
-### `mssqlCdcUpdateMaskToBooleanArray(updateMask:Buffer):Array<boolean>`
+### `mssqlCdcUpdateMaskToBitArray(updateMask:Buffer):Array<boolean>`
 
 mssqlCdcUpdateMaskToBitArray takes a mssql change data capture update mask, and returns a bit array which signifies which column ordinal bits are set.  The first column ordinal in mssql change data capture is 1, so the zeroth array element is empty.
 
@@ -181,13 +163,32 @@ updateMaskToBit(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [, 1, 1, 1
 
 ### `noopLogger`
 
-noopLogger is an object with all pino logger logging methods defined, but do nothing.
+noopLogger is an object with all pino logger logging methods defined, but does nothing.
 
 ```javascript
 import { noopLogger } from '@brick-city/util';
 
 // Now use it in places where a pino logger is needed, but
 // none was passed.
+
+```
+
+### `traceLogger(logger:logger):function`
+
+Pass a pinot styled logger (needs a 'trace' method, and isLevelEnabled method) to this function and it 
+will return a function that logs a trace message. If the logger does not have a trace method, or the 
+log level is not 'trace', it will return a function that does nothing.
+
+The trace message will include the file name, line number, column number, function name, and method name.
+
+```javascript
+import { traceLogger } from '@brick-city/util';
+
+trace = traceLogger(pinoInstance);
+
+// Now drop these wherever you need to trace the logic
+
+trace()
 
 ```
 

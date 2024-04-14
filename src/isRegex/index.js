@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 /**
  *
  * Checks to see if the passed object is a regular expression

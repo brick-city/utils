@@ -1,6 +1,5 @@
 import { isPlainObject } from '../isPlainObject/index.js';
 
-/* eslint-disable import/prefer-default-export */
 /**
  *
  * @description Deepfreezes a plain object, and avoids Buffer types and other non-plain objects

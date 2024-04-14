@@ -34,7 +34,8 @@
         "spaced-comment": ["error", "always", { "exceptions": [],"block": { "balanced": true }  }] ,
         "lines-around-comment": ["error", { "beforeBlockComment": true, "afterBlockComment": false , "allowObjectStart": true}],
         "import/extensions": ["error", "ignorePackages"],
-        "no-plusplus":["error", {"allowForLoopAfterthoughts": true}]
+        "no-plusplus":["error", {"allowForLoopAfterthoughts": true}],
+        "import/prefer-default-export": "off"
     },
     "parser": "@babel/eslint-parser",
     "parserOptions": {
