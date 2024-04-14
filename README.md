@@ -26,6 +26,7 @@ npm install --save @brick-city/utils
 - [isUndefinedOrNull](#isundefinedornullvalueanyboolean) Check for an undefined or null value
 - [mssqlCdcUpdateMaskToBooleanArray]() Converts an mssql change data capture update mask to an array of boolean 
 - [mssqlCdcUpdateMaskToBitArray]() Converts an mssql change data capture update mask to an array of bits
+- [traceLogger](#traceLogger) Creates a function that generates a trace entry in the log
 - [zeroPaddedBinary](#zeropaddedbinaryintegernumberstring) Nicely format a number as a binary
 
 ### `arrayToString(arr:*[]):string`
