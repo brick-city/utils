@@ -16,35 +16,68 @@
 
 export function acHelper({ signal, abortCallback, timeout }) {
 
-    if (!signal || !(signal instanceof AbortSignal) || !Array.isArray(signal) || !signal.length) {
-
-        throw new Error('signal is required');
-
-    }
-
     const abortController = new AbortController();
 
     /** @type {AbortSignal[]} */
-    const signals = Array.isArray(signal) ? signal : [signal];
+    let signals;
+
+    if (!signal) {
+
+        throw new Error('acHelper: signal is required');
+
+    } else if (Array.isArray(signal)) {
+
+        if (!signal.length) {
+
+            throw new Error('acHelper: signal must not be an empty array');
+
+        } else if (!signal.every((s) => s instanceof AbortSignal)) {
+
+            throw new Error('acHelper: Detected an invalid AbortSignal instance in the signal array');
+
+        } else {
+
+            signals = signal;
+
+        }
+
+    } else if (!(signal instanceof AbortSignal)) {
+
+        throw new Error('acHelper: signal must be an AbortSignal or an array of AbortSignal instances');
+
+    } else {
+
+        signals = [signal];
+
+    }
 
     if (timeout) {
 
-        const timeoutSignal = AbortSignal.timeout(timeout);
+        if (typeof timeout !== 'number') {
 
-        signals.push(timeoutSignal);
+            throw new Error('acHelper: timeout must be a number');
+
+        } else {
+
+            const timeoutSignal = AbortSignal.timeout(timeout);
+
+            signals.push(timeoutSignal);
+
+        }
+
+    }
+
+    if (!abortCallback || typeof abortCallback !== 'function') {
+
+        throw new Error('acHelper: abortCallback is required, and must be a function');
 
     }
 
-    if (signals.length) {
+    /** @type {AbortSignal} */
+    const abortSignals = AbortSignal.any(signals);
 
-        /** @type {AbortSignal} */
-        // @ts-ignore there is a type definition error on AbortSignal, which currently is missing 'any' as a method on AbortSignal
-        const abortSignal = AbortSignal.any(signals);
-
-        abortSignal.addEventListener('abort', abortCallback, { once: true });
-        abortSignal.addEventListener('abort', abortController.abort, { once: true });
-
-    }
+    abortSignals.addEventListener('abort', abortController.abort, { once: true });
+    abortSignals.addEventListener('abort', abortCallback, { once: true });
 
     return abortController;
 
@@ -69,7 +102,7 @@ export function acHelper({ signal, abortCallback, timeout }) {
 export function acHelperNoSignal({ signal, abortCallback, timeout }) {
 
     return acHelper({
-        signal: signal ?? [new AbortController().signal],
+        signal: signal ?? new AbortController().signal,
         abortCallback,
         timeout,
     });

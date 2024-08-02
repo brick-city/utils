@@ -18,6 +18,7 @@ npm install --save @brick-city/utils
 
 
 ## Usage
+- [acHelper](#acHelper) A little abort controller helper
 - [arrayToString](#arraytostringarrstring) Nicely format an array for display
 - [deepfreeze](#deepfreezeobjobjectvoid) Deep freeze an object and avoid buffers
 - [isPlainObject](#isplainobjectobjobjectboolean) Check if an object is a plain object 
@@ -30,6 +31,49 @@ npm install --save @brick-city/utils
 - [traceLogger](#traceLogger) Generates trace messages, and posts them to the provided logger
 - [zeroPaddedBinary](#zeropaddedbinaryintegernumberstring) Nicely format a number as a binary
 
+### 'acHelper({signal: AbortSignal | AbortSignal[]; timeout?: number; abortCallback: EventListener;}):AbortController
+
+acHelper & acHelperNoSignal are abort controller helpers. They simplify some of the repetitive code when consuming AbortSignals and creating AbortControllers.
+acHelper requires a signal, acHelperNoSignal does not. Hopefully this code example makes sense
+
+```javascript
+import { acHelper } from '@brick-city/utils';
+
+async myAsyncFunction ({signal, options}) 
+{
+    const controller = acHelper({ signal, timeout:50000, abortCallback: () => {
+        console.log('Abort signal received');
+        // Additional cleanup or error handling logic here
+    }});
+
+    // Any abort signals received from caller on signal will be passed down to 'fetch'
+    // myAsyncFunction will also time out after 50000, and the downstream fetch will be aborted
+
+    try {
+        const fetchPromise = fetch('https://api.example.com/data', {
+            signal: controller.signal,
+            ...options
+        });
+
+        try {
+            await someOtherAsyncThings ();
+            const response = await fetchPromise;
+        }
+        catch (error){
+            controller.abort(); // This will abort the fetch
+        }
+
+    } catch (error) {
+        console.error('An error occurred:', error);
+    } finally {
+        controller.abort(); // Abort the request if it hasn't completed yet
+    }
+}
+
+myAsyncFunction({ signal: new AbortController().signal, options: { method: 'GET' } });
+```
+
+
 ### `arrayToString(arr:*[]):string`
 
 arrayToString displays an array as you would expect it to look in code. If the element is undefined, only a comma is returned, if it is a string its wrapped in quotes. Simply calls .toString on each element
@@ -37,7 +81,7 @@ arrayToString displays an array as you would expect it to look in code. If the e
 Throws a type error if passed something other than an array.
 
 ```javascript
-import { arrayToString } from '@brick-city/util';
+import { arrayToString } from '@brick-city/utils';
 
 arrayToString([]) // []
 arrayToString([,]) // [ ,]
@@ -52,7 +96,7 @@ arrayToString([1, 'abc', 5]) // [ 1, 'abc', 5]
 deepFreeze takes an object and recursively walks down the object's own properties and deepFreeze(s) any plain objects it finds, and then freezes the object. Buffers and other non-plain objects are skipped. This was a drawback of other "deepFreeze" type functions which are tripped up by Buffers. Returns a reference to the originally passed object.
 
 ```javascript
-import { deepFreeze } from '@brick-city/util';
+import { deepFreeze } from '@brick-city/utils';
 
 deepFreeze(object)
 
@@ -63,7 +107,7 @@ deepFreeze(object)
 isPlainObject returns a boolean that indicates if the object is a plain object.
 
 ```javascript
-import { isPlainObject } from '@brick-city/util';
+import { isPlainObject } from '@brick-city/utils';
 
 isPlainObject({}) // true
 isPlainObject({a:0}) // true
@@ -80,7 +124,7 @@ isPlainObject( Object.create(null) ); //true
 isPlainObjectEmpty returns a boolean that indicates if the object is a plain object and it is empty.
 
 ```javascript
-import { isPlainObjectEmpty } from '@brick-city/util';
+import { isPlainObjectEmpty } from '@brick-city/utils';
 
 isPlainObjectEmpty({}) // true
 isPlainObjectEmpty({a:0}) // false
@@ -97,7 +141,7 @@ isPlainObjectEmpty( Object.create(null) ); //true
 isRegex returns a boolean that indicates if the object is a regular expression.
 
 ```javascript
-import { isRegex } from '@brick-city/util';
+import { isRegex } from '@brick-city/utils';
 
 isRegex( new RegExp('') ); //true
 isRegex( new RegExp('ab+c') ); //true
@@ -117,7 +161,7 @@ isRegex( Object.create(null) ); //false
 isUndefinedOrNull returns a boolean that indicates if the value passed is either undefined or null.
 
 ```javascript
-import { isPlainObjectEmpty } from '@brick-city/util';
+import { isPlainObjectEmpty } from '@brick-city/utils';
 
 isUndefinedOrNull({}) // false
 isUndefinedOrNull({a:0}) // false
@@ -152,7 +196,7 @@ updateMaskToBoolean(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [,
 mssqlCdcUpdateMaskToBitArray takes a mssql change data capture update mask, and returns a bit array which signifies which column ordinal bits are set.  The first column ordinal in mssql change data capture is 1, so the zeroth array element is empty.
 
 ```javascript
-import { mssqlCdcUpdateMaskTobitArray:updateMaskToBit } from '@brick-city/util';
+import { mssqlCdcUpdateMaskTobitArray:updateMaskToBit } from '@brick-city/utils';
 
 updateMaskToBit(Buffer.from([0b00000010]); // [, 0, 1, 0, 0, 0, 0, 0, 0]
 updateMaskToBit(Buffer.from([0b01000000]); // [, 0, 0, 0, 0, 0, 0, 1, 0]
@@ -182,7 +226,7 @@ log level is not 'trace', it will return a function that does nothing.
 The trace message will include the file name, line number, column number, function name, and method name.
 
 ```javascript
-import { traceLogger } from '@brick-city/util';
+import { traceLogger } from '@brick-city/utils';
 
 trace = traceLogger(pinoInstance);
 
@@ -197,7 +241,7 @@ trace()
 zeroPaddedBinary returns the integer as a binary string padded with zeros to a length of multiples of 8, and prefixed with '0b'. Throws with a TypeError if the value passed is not a number. The value is rounded down to an integer if it is a float.
 
 ```javascript
-import { zeroPaddedBinary } from '@brick-city/util';
+import { zeroPaddedBinary } from '@brick-city/utils';
 
 zeroPaddedBinary({}) // throws new TypeError('Expecting a number')
 zeroPaddedBinary({a:0})  // throws new TypeError('Expecting a number')
