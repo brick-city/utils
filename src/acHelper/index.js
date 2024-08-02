@@ -74,6 +74,7 @@ export function acHelper({ signal, abortCallback, timeout }) {
     }
 
     /** @type {AbortSignal} */
+    // @ts-ignore there is a type definition error on AbortSignal, which currently is missing 'any' as a method on AbortSignal
     const abortSignals = AbortSignal.any(signals);
 
     abortSignals.addEventListener('abort', abortController.abort, { once: true });

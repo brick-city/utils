@@ -31,7 +31,7 @@ npm install --save @brick-city/utils
 - [traceLogger](#traceLogger) Generates trace messages, and posts them to the provided logger
 - [zeroPaddedBinary](#zeropaddedbinaryintegernumberstring) Nicely format a number as a binary
 
-### 'acHelper({signal: AbortSignal | AbortSignal[]; timeout?: number; abortCallback: EventListener;}):AbortController
+### `acHelper({signal: AbortSignal | AbortSignal[]; timeout?: number; abortCallback: EventListener;}):AbortController`
 
 acHelper & acHelperNoSignal are abort controller helpers. They simplify some of the repetitive code when consuming AbortSignals and creating AbortControllers.
 acHelper requires a signal, acHelperNoSignal does not. Hopefully this code example makes sense
