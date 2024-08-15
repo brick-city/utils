@@ -19,6 +19,7 @@ npm install --save @brick-city/utils
 
 ## Usage
 - [acHelper](#acHelper) A little abort controller helper
+- [asciiCaseInsensitiveRegex](#asciiCaseInsensitiveRegex) Pass a string, return a regex that matches ascii letters with case insensitivity, does not use /i
 - [arrayToString](#arraytostringarrstring) Nicely format an array for display
 - [deepfreeze](#deepfreezeobjobjectvoid) Deep freeze an object and avoid buffers
 - [isPlainObject](#isplainobjectobjobjectboolean) Check if an object is a plain object 
@@ -73,6 +74,24 @@ async myAsyncFunction ({signal, options})
 myAsyncFunction({ signal: new AbortController().signal, options: { method: 'GET' } });
 ```
 
+### `asciiCaseInsensitiveRegex(str:string):regex`
+
+From a passed string, returns a regex with special characters escaped and ASCII letters matched
+to both upper and lower case letters.
+
+``` javascript
+import { acHelper } from '@brick-city/utils';
+
+const regex = asciiCaseInsensitiveRegex("Hello*World");
+console.log(regex); // Output: /[Hh][Ee][Ll][Ll][Oo]\*[Ww][Oo][Rr][Ll][Dd]/
+console.log(regex.test("hElLo*woRLd")); // Output: true
+
+asciiCaseInsensitiveRegex({}) // throws new TypeError('Expecting a string')
+asciiCaseInsensitiveRegex({a:0})  // throws new TypeError('Expecting a string')
+asciiCaseInsensitiveRegex(null)  // throws new TypeError('Expecting a string')
+asciiCaseInsensitiveRegex(undefined)  // throws new TypeError('Expecting a string')
+
+``` 
 
 ### `arrayToString(arr:*[]):string`
 
