@@ -26,6 +26,7 @@ npm install --save @brick-city/utils
 - [isPlainObjectEmpty](#isplainobjectemptyobjobjectboolean) Check if an object is a plain object, and is empty
 - [isRegex](#isregexobjanyboolean) Check if the passed value is a regular expression  
 - [isUndefinedOrNull](#isundefinedornullvalueanyboolean) Check for an undefined or null value
+- [lucidePick](#lucidepick) A utility for filtering and selecting Lucide icons by category, name, or tags
 - [mssqlCdcUpdateMaskToBooleanArray](#mssqlCdcUpdateMaskToBooleanArray) Converts an mssql change data capture update mask to an array of boolean 
 - [mssqlCdcUpdateMaskToBitArray]() Converts an mssql change data capture update mask to an array of bits
 - [noopLogger](#noopLogger) A pino structured no-op logger
@@ -189,6 +190,44 @@ isUndefinedOrNull(undefined) // true
 isUndefinedOrNull(()=>{}) // false
 isUndefinedOrNull(7) // false
 
+```
+
+### `lucidePick({categoryCallback, iconListCallback, initialCategory, initialFilter})`
+
+lucidePick is a utility for filtering and selecting Lucide icons by category, name, or tags. It uses a category-based approach for metadata loading to improve performance and reduce memory usage.
+
+```javascript
+import { lucidePick } from '@brick-city/utils';
+
+// Create a picker instance
+const picker = lucidePick({
+  // Callback for category list updates
+  categoryCallback: (categories) => {
+    // Handle category list updates
+    // categories is an array of { category, count } objects
+    console.log(categories);
+  },
+  
+  // Callback for icon list updates
+  iconListCallback: (icons) => {
+    // Handle icon list updates
+    // icons is an array of icon metadata objects
+    console.log(icons);
+  },
+  
+  // Optional initial category
+  initialCategory: 'arrows',
+  
+  // Optional initial filter
+  initialFilter: 'direction'
+});
+
+// Methods available on the picker instance
+picker.setCategory('design');     // Filter by category
+picker.setCategory('*');          // Show all categories (wildcard)
+picker.setFilter('chart');        // Filter by tag or name (case-insensitive)
+picker.clearFilter();             // Clear all filters
+picker.getIcon('ArrowUp');        // Get metadata for a specific icon
 ```
 
 ### `mssqlCdcUpdateMaskToBooleanArray(updateMask:Buffer):Array<boolean>`

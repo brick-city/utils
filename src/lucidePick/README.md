@@ -14,18 +14,40 @@ The metadata for Lucide icons is loaded using a category-based approach to impro
 
 1. **Split by Category**: The large `lucide-metadata.json` file is split into smaller category-based JavaScript files using the `split-metadata.js` script.
 
-2. **Dynamic Loading**: The `lucide-pick.js` module attempts to load the combined metadata file first, with a fallback to the original JSON file if needed.
+2. **Category-Based Organization**: Each icon is assigned to one or more categories, with a primary category (the first in the list) determining which category file it's stored in.
 
-3. **Lazy Loading**: Icons are loaded only when needed, which helps reduce the initial load time and memory footprint.
+3. **Combined Loading**: The `lucide-pick.js` module imports the `lucide-metadata-combined.js` file, which combines all category files into a single array.
+
+4. **Efficient Data Structures**: The implementation uses JavaScript Maps and Sets for efficient data storage, retrieval, and filtering operations.
 
 ### Files
 
 - **lucide-pick.js**: The main module that provides the API for filtering and selecting icons.
-- **lucide-metadata.json**: The original metadata file (used as a fallback).
+- **lucide-metadata.json**: The original metadata file containing all icon information.
 - **lucide-metadata-combined.js**: A generated file that imports and combines all category files.
 - **categories/**: Directory containing individual category files (e.g., `arrows.js`, `design.js`).
 - **split-metadata.js**: Utility script to split the metadata into category files.
-- **test-lucide-pick.js**: Test script to verify the functionality.
+- **test.js**: Test script to verify the functionality.
+
+## Icon Metadata Structure
+
+Each icon in the metadata has the following structure:
+
+```javascript
+{
+    icon: 'IconName',        // Pascal case name (e.g., 'ArrowRight')
+    name: 'icon-name',       // Kebab case name (e.g., 'arrow-right')
+    tags: [                  // Array of related terms for searching
+        'direction',
+        'navigation',
+        'right'
+    ],
+    categories: [            // Array of categories the icon belongs to
+        'arrows',            // Primary category (first in the list)
+        'navigation'
+    ]
+}
+```
 
 ## Usage
 
@@ -38,12 +60,16 @@ const picker = lucidePick({
   categoryCallback: (categories) => {
     // Handle category list updates
     // categories is an array of { category, count } objects
+    console.log(categories);
+    // Example: [{ category: 'arrows', count: 24 }, { category: 'design', count: 18 }]
   },
   
   // Callback for icon list updates
   iconListCallback: (icons) => {
     // Handle icon list updates
     // icons is an array of icon metadata objects
+    console.log(icons);
+    // Example: [{ icon: 'ArrowUp', name: 'arrow-up', tags: [...], categories: [...] }]
   },
   
   // Optional initial category
@@ -55,10 +81,39 @@ const picker = lucidePick({
 
 // Methods available on the picker instance
 picker.setCategory('design');     // Filter by category
-picker.setFilter('chart');        // Filter by tag or name
+picker.setCategory('*');          // Show all categories (wildcard)
+picker.setFilter('chart');        // Filter by tag or name (case-insensitive)
 picker.clearFilter();             // Clear all filters
 picker.getIcon('ArrowUp');        // Get metadata for a specific icon
 ```
+
+### Method Details
+
+#### `setCategory(category)`
+
+Sets the active category to filter icons by.
+
+- `category`: The icon category to select. Use `'*'` to select all categories.
+- Throws an error if the category is empty or not found.
+
+#### `setFilter(tagFilter)`
+
+Filters icons by tags or names that include the given filter string.
+
+- `tagFilter`: The tag filter string to apply.
+- Filtering is case-insensitive.
+- Can be combined with category filtering.
+
+#### `clearFilter()`
+
+Clears any active filters and resets to show all icons.
+
+#### `getIcon(icon)`
+
+Returns the icon metadata for the given icon name.
+
+- `icon`: The icon name in Pascal case (e.g., 'ArrowRight').
+- Returns `undefined` if the icon doesn't exist.
 
 ## Generating Category Files
 
@@ -79,4 +134,4 @@ This will:
 - **Reduced Memory Usage**: By splitting the metadata into smaller files, the JavaScript engine can better optimize memory usage.
 - **Improved Performance**: Loading smaller chunks of data is faster than loading one large file.
 - **Better AI Compatibility**: The smaller files are more compatible with AI tools that might struggle with large JSON files.
-- **Fallback Mechanism**: The system will still work with the original JSON file if needed.
+- **Efficient Filtering**: The use of Maps and Sets provides efficient filtering and lookup operations.
