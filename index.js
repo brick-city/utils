@@ -10,3 +10,4 @@ export * from './src/noopLogger/index.js';
 export * from './src/traceLogger/index.js';
 export * from './src/acHelper/index.js';
 export * from './src/asciiCaseInsensitiveRegex/index.js';
+export * from './src/lucidePick/lucide-pick.js';

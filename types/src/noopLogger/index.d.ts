@@ -14,7 +14,7 @@ export namespace noopLogger {
         debug: () => void;
         trace: () => void;
         silent: () => void;
-        child: () => any;
+        child: () => /*elided*/ any;
         level: number;
         isLevelEnabled: () => boolean;
     };

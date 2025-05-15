@@ -1,0 +1,305 @@
+/**
+ * @typedef {Object} LucideIconMetadata
+ * @property {string} icon - The name of the icon in Pascal Case.
+ * @property {string} name - The name of the icon in kebab case.
+ * @property {string[]} tags - An array of tags associated with the icon.
+ * @property {string[]} categories - An array of categories the icon belongs to.
+ */
+
+/**
+ * @typedef {[string, Set<LucideIconMetadata>]} LucideIconEntryTuple
+ * A tuple where the first element is a string key, and the second is a set of LucideIconMetadata.
+ */
+
+/**
+ * @type {Promise<LucideIconMetadata[]>}
+ * @description Promise that resolves to metadata for Lucide icons.
+ */
+/**
+ * @type {LucideIconMetadata[]}
+ * @description Metadata for Lucide icons.
+ */
+import metadata from './lucide-metadata-combined.js';
+
+/**
+ * @type {Map<string, LucideIconMetadata>}
+ */
+const lucideIcons = new Map(metadata.map((obj) => [obj.icon, obj]));
+
+/**
+ * @type {Map<string, Set<LucideIconMetadata>>}
+ * @description Map of categories to sets of icons in each category
+ */
+const lucideCategories = new Map();
+
+// Initialize categories map more efficiently
+metadata.forEach((icon) => {
+
+    icon.categories.forEach((cat) => {
+
+        if (!lucideCategories.has(cat)) {
+
+            lucideCategories.set(cat, new Set());
+
+        }
+        lucideCategories.get(cat).add(icon);
+
+    });
+
+});
+
+/**
+ * @type {Map<string, Set<LucideIconMetadata>>}
+ * @description Map of tags and names to sets of icons with those tags/names
+ */
+const lucideTagIcons = new Map();
+
+// Initialize tag/name map more efficiently
+metadata.forEach((icon) => {
+
+    // Add tags
+    icon.tags.forEach((tag) => {
+
+        const lowercaseTag = tag.toLowerCase();
+        if (!lucideTagIcons.has(lowercaseTag)) {
+
+            lucideTagIcons.set(lowercaseTag, new Set());
+
+        }
+        lucideTagIcons.get(lowercaseTag).add(icon);
+
+    });
+
+    // Add name
+    const lowercaseName = icon.name.toLowerCase();
+    if (!lucideTagIcons.has(lowercaseName)) {
+
+        lucideTagIcons.set(lowercaseName, new Set());
+
+    }
+    lucideTagIcons.get(lowercaseName).add(icon);
+
+});
+
+const lucideTags = [...lucideTagIcons.keys()];
+
+/**
+ * @typedef {Object} CategoryCount
+ * @property {string} category - The name of the icon category.
+ * @property {number} count - The number of icons in this category.
+ *
+ * @callback IconCallback
+ * @param {LucideIconMetadata[]} icons - The array of LucideIcon items.
+ * @returns {void}
+ *
+ * @callback CategoryCallback
+ * @param {CategoryCount[]} categories - The array of category count items.
+ * @returns {void}
+
+ * @typedef {Object} LucidePickOptions
+ * @property {CategoryCallback} categoryCallback - Callback invoked with icons for category selection.
+ * @property {IconCallback} iconListCallback - Callback invoked with icons for the icon list display.
+ * @property {string} [initialCategory] - Optional initial category to filter the icons.
+ * @property {string} [initialFilter] - Optional initial filter string to apply to icon names or tags.
+
+ * @typedef {Object} LucidePickResult
+ * @property {(icon: string) => LucideIconMetadata} getIcon - Returns the icon metadata for the given icon name.
+ * @property {(tagFilter: string) => void} setFilter - Sets a filter to show only icons matching the given tag filter.
+ * @property {() => void} clearFilter - Clears any active filters.
+ * @property {(category: string) => void} setCategory - Sets the active category to filter icons by.
+ *
+ * @function
+ * @name lucidePick
+ * @param {LucidePickOptions} options - Configuration options for lucidePick.
+ * @returns {LucidePickResult} An object with methods to interact with the icon picker.
+ */
+
+export const lucidePick = ({
+    iconListCallback, categoryCallback, initialCategory, initialFilter,
+}) => {
+
+    // Set to store icons that match the current filter
+    const filteredIcons = new Set();
+
+    // Map to store filtered icons by category
+    const lucideCategoriesFiltered = new Map();
+
+    // Initialize filtered categories with copies of the original sets
+    lucideCategories.forEach((iconSet, cat) => {
+
+        lucideCategoriesFiltered.set(cat, new Set(iconSet));
+
+    });
+
+    // Track current filter state
+    let currentCategory = initialCategory || '*';
+    let currentFilter = initialFilter?.trim() || '';
+
+    /**
+     * @description Helper function to sort icons by name
+     * @param {LucideIconMetadata[]} icons - Array of icons to sort
+     * @returns {LucideIconMetadata[]} Sorted array of icons
+     */
+    const sortIconsByName = (icons) => icons.sort((a, b) => a.icon.localeCompare(b.icon));
+
+    /**
+     * @description Calls the iconListCallback with the appropriate icons based on current filters
+     */
+    const callbackIconList = () => {
+
+        let iconsToDisplay;
+
+        if (currentCategory === '*') {
+
+            if (currentFilter === '') {
+
+                // No filtering, use the pre-sorted metadata
+                iconsToDisplay = metadata;
+
+            } else {
+
+                // Filter by tag/name only
+                iconsToDisplay = sortIconsByName([...filteredIcons.values()]);
+
+            }
+
+        } else if (currentFilter === '') {
+
+            // Filter by category only
+            iconsToDisplay = sortIconsByName([...lucideCategories.get(currentCategory)]);
+
+        } else {
+
+            // Filter by both category and tag/name
+            iconsToDisplay = sortIconsByName([...lucideCategoriesFiltered.get(currentCategory)]);
+
+        }
+
+        iconListCallback(iconsToDisplay);
+
+    };
+
+    /**
+     * @description Calls the categoryCallback with the current category counts
+     * Creates an array of category objects with name and count properties
+     */
+    const callbackCategoryList = () => {
+
+        // Convert the filtered categories map to an array of category count objects
+        const filteredCategories = Array.from(lucideCategoriesFiltered, ([iconCategory, iconSet]) => ({
+            category: iconCategory,
+            count: iconSet.size,
+        }));
+
+        // Invoke the callback with the category counts
+        categoryCallback(filteredCategories);
+
+    };
+
+    const pick = {
+        /**
+         * @param {string} icon
+         * @returns {LucideIconMetadata}
+         * @description Returns the icon metadata for the given icon name.
+         */
+        getIcon: (icon) => lucideIcons.get(icon),
+
+        /**
+         * @param {string} tagFilter - The tag filter string to apply
+         * @description Filters icons by tags that include the given filter string
+         */
+        setFilter: (tagFilter) => {
+
+            // Store the lowercase version to avoid repeated toLowerCase() calls
+            const lowercaseFilter = tagFilter.toLowerCase();
+
+            // Find tags that match the filter
+            const filteredTags = lucideTags.filter((tag) => tag.includes(lowercaseFilter));
+
+            // Clear previous filtered icons
+            filteredIcons.clear();
+
+            // Add all icons from matching tags to the filtered set
+            filteredTags.forEach((tag) => {
+
+                const icons = lucideTagIcons.get(tag);
+                if (icons) {
+
+                    icons.forEach(filteredIcons.add, filteredIcons);
+
+                }
+
+            });
+
+            [...lucideCategoriesFiltered.keys()].forEach((cat) => {
+
+                // Implement Set intersection manually since it's not a native Set method
+                const categoryIcons = lucideCategories.get(cat);
+
+                // Convert filteredIcons to array, filter those in categoryIcons, then create a new Set
+                const intersection = new Set(Array.from(filteredIcons).filter((icon) => categoryIcons.has(icon)));
+
+                lucideCategoriesFiltered.set(cat, intersection);
+
+            });
+
+            callbackCategoryList();
+            callbackIconList();
+
+        },
+
+        /**
+         * @description Clears any active filters and resets to show all icons
+         */
+        clearFilter: () => {
+
+            currentFilter = '';
+
+            filteredIcons.clear();
+            lucideCategoriesFiltered.clear();
+
+            // Create a new Map with copies of the original category sets
+            lucideCategories.forEach((iconSet, cat) => {
+
+                lucideCategoriesFiltered.set(cat, new Set(iconSet));
+
+            });
+
+            callbackCategoryList();
+            callbackIconList();
+
+        },
+
+        /**
+         * @param {string} category - The icon category to select, passing '*' will select all categories
+         * @description Sets the active category to filter icons by
+         * @throws {Error} If the category is empty or not found
+         */
+        setCategory: (category) => {
+
+            // Validate category parameter
+            if (!category || category.trim() === '') {
+
+                throw new Error('Category cannot be empty');
+
+            }
+
+            // Special case for '*' (all categories)
+            if (category !== '*' && !lucideCategories.has(category)) {
+
+                throw new Error(`Category "${category}" not found`);
+
+            }
+
+            currentCategory = category;
+
+            callbackCategoryList();
+            callbackIconList();
+
+        },
+
+    };
+
+    return pick;
+
+};
