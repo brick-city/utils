@@ -33,6 +33,7 @@ npm install --save @brick-city/utils
 - [traceLogger](#tracelogger) Generates trace messages, and posts them to the provided logger
 - [zeroPaddedBinary](#zeropaddedbinary) Nicely format a number as a binary
 
+<a id="achelper"></a>
 ### `acHelper({signal: AbortSignal | AbortSignal[], timeout?: number, abortCallback: EventListener}):AbortController`
 
 acHelper & acHelperNoSignal are abort controller helpers. They simplify some of the repetitive code when consuming AbortSignals and creating AbortControllers.
@@ -75,6 +76,7 @@ async myAsyncFunction ({signal, options})
 myAsyncFunction({ signal: new AbortController().signal, options: { method: 'GET' } });
 ```
 
+<a id="asciicaseinsensitiveregex"></a>
 ### `asciiCaseInsensitiveRegex(str:string):regex`
 
 From a passed string, returns a regex with special characters escaped and ASCII letters matched
@@ -94,6 +96,7 @@ asciiCaseInsensitiveRegex(undefined)  // throws new TypeError('Expecting a strin
 
 ``` 
 
+<a id="arraytostring"></a>
 ### `arrayToString(arr:*[]):string`
 
 arrayToString displays an array as you would expect it to look in code. If the element is undefined, only a comma is returned, if it is a string its wrapped in quotes. Simply calls .toString on each element
@@ -111,6 +114,7 @@ arrayToString([1, 'abc', 5]) // [ 1, 'abc', 5]
 
 ```
 
+<a id="deepfreeze"></a>
 ### `deepFreeze(obj:Object):Object`
 
 deepFreeze takes an object and recursively walks down the object's own properties and deepFreeze(s) any plain objects it finds, and then freezes the object. Buffers and other non-plain objects are skipped. This was a drawback of other "deepFreeze" type functions which are tripped up by Buffers. Returns a reference to the originally passed object.
@@ -122,6 +126,7 @@ deepFreeze(object)
 
 ```
 
+<a id="isplainobject"></a>
 ### `isPlainObject(obj:any):boolean`
 
 isPlainObject returns a boolean that indicates if the object is a plain object.
@@ -139,6 +144,7 @@ isPlainObject( Object.create(null) ); //true
 
 ```
 
+<a id="isplainobjectempty"></a>
 ### `isPlainObjectEmpty(obj:any):boolean`
 
 isPlainObjectEmpty returns a boolean that indicates if the object is a plain object and it is empty.
@@ -156,6 +162,7 @@ isPlainObjectEmpty( Object.create(null) ); //true
 
 ```
 
+<a id="isregex"></a>
 ### `isRegex(obj:any):boolean`
 
 isRegex returns a boolean that indicates if the object is a regular expression.
@@ -176,6 +183,7 @@ isRegex( Object.create(null) ); //false
 
 ```
 
+<a id="isundefinedornull"></a>
 ### `isUndefinedOrNull(value:any):boolean`
 
 isUndefinedOrNull returns a boolean that indicates if the value passed is either undefined or null.
@@ -192,6 +200,7 @@ isUndefinedOrNull(7) // false
 
 ```
 
+<a id="lucidepick"></a>
 ### `lucidePick({categoryCallback, iconListCallback, initialCategory, initialFilter})`
 
 lucidePick is a utility for filtering and selecting Lucide icons by category, name, or tags. It uses a category-based approach for metadata loading to improve performance and reduce memory usage.
@@ -230,6 +239,7 @@ picker.clearFilter();             // Clear all filters
 picker.getIcon('ArrowUp');        // Get metadata for a specific icon
 ```
 
+<a id="mssqlcdcupdatemasktobooleanarray"></a>
 ### `mssqlCdcUpdateMaskToBooleanArray(updateMask:Buffer):Array<boolean>`
 
 mssqlCdcUpdateMaskToBooleanArray takes a mssql change data capture update mask, and returns a boolean array which signifies which column ordinal bits are set.  The first column ordinal in mssql change data capture is 1, so the zeroth array element is empty.
@@ -249,6 +259,7 @@ updateMaskToBoolean(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [,
 ```
 
 
+<a id="mssqlcdcupdatemasktobitarray"></a>
 ### `mssqlCdcUpdateMaskToBitArray(updateMask:Buffer):Array<boolean>`
 
 mssqlCdcUpdateMaskToBitArray takes a mssql change data capture update mask, and returns a bit array which signifies which column ordinal bits are set.  The first column ordinal in mssql change data capture is 1, so the zeroth array element is empty.
@@ -263,6 +274,7 @@ updateMaskToBit(Buffer.from([0b00000101, 0b00000001, 0b11111111]); // [, 1, 1, 1
 // Notice the bytes are reversed, the last bytes bits appear first
 ```
 
+<a id="nooplogger"></a>
 ### `noopLogger`
 
 noopLogger is an object with all pino logger logging methods defined, but does nothing.
@@ -275,6 +287,7 @@ import { noopLogger } from '@brick-city/util';
 
 ```
 
+<a id="tracelogger"></a>
 ### `traceLogger(logger:logger):function`
 
 Pass a pinot styled logger (needs a 'trace' method, and isLevelEnabled method) to this function and it 
@@ -294,6 +307,7 @@ trace()
 
 ```
 
+<a id="zeropaddedbinary"></a>
 ### `zeroPaddedBinary(integer:number):string`
 
 zeroPaddedBinary returns the integer as a binary string padded with zeros to a length of multiples of 8, and prefixed with '0b'. Throws with a TypeError if the value passed is not a number. The value is rounded down to an integer if it is a float.
