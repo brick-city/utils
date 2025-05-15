@@ -32,6 +32,8 @@ describe('lucidePick', () => {
             assert.strictEqual(typeof picker.setFilter, 'function', 'setFilter should be a function');
             assert.strictEqual(typeof picker.clearFilter, 'function', 'clearFilter should be a function');
             assert.strictEqual(typeof picker.setCategory, 'function', 'setCategory should be a function');
+            assert.strictEqual(typeof picker.getActiveCategory, 'function', 'getActiveCategory should be a function');
+            assert.strictEqual(typeof picker.getActiveFilter, 'function', 'getActiveFilter should be a function');
 
             // Verify callbacks are called (they might be called during initialization or when methods are called)
             picker.setCategory('*'); // Trigger callbacks explicitly
@@ -320,6 +322,256 @@ describe('lucidePick', () => {
                 picker.setCategory('non-existent-category');
 
             }, /Category .* not found/, 'Should throw error for non-existent category');
+
+        });
+
+    });
+
+    describe('getActiveCategory Method', () => {
+
+        it('should return the current active category', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Default should be '*'
+            assert.strictEqual(picker.getActiveCategory(), '*', 'Default category should be "*"');
+
+            // Set a specific category
+            picker.setCategory('arrows');
+            assert.strictEqual(picker.getActiveCategory(), 'arrows', 'Should return the active category');
+
+            // Set back to wildcard
+            picker.setCategory('*');
+            assert.strictEqual(picker.getActiveCategory(), '*', 'Should return "*" after setting wildcard');
+
+        });
+
+        it('should return the initial category when provided', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+                initialCategory: 'design',
+            });
+
+            assert.strictEqual(picker.getActiveCategory(), 'design', 'Should return the initial category');
+
+        });
+
+    });
+
+    describe('getActiveFilter Method', () => {
+
+        it('should return the current active filter', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Default should be empty string
+            assert.strictEqual(picker.getActiveFilter(), '', 'Default filter should be empty string');
+
+            // Set a filter
+            picker.setFilter('chart');
+            // Store the current filter value
+            const currentFilter = picker.getActiveFilter();
+            assert.strictEqual(currentFilter, 'chart', 'Should return the active filter');
+
+            // Clear filter
+            picker.clearFilter();
+            assert.strictEqual(picker.getActiveFilter(), '', 'Should return empty string after clearing filter');
+
+        });
+
+        it('should return the initial filter when provided', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+                initialFilter: 'arrow',
+            });
+
+            assert.strictEqual(picker.getActiveFilter(), 'arrow', 'Should return the initial filter');
+
+        });
+
+    });
+
+    describe('Category Sorting', () => {
+
+        it('should always place "*" category first in the category list', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Trigger category callback
+            picker.setCategory('*');
+
+            // First category should be '*'
+            assert.strictEqual(categoryCallbackData[0].category, '*', 'First category should be "*"');
+
+        });
+
+        it('should sort other categories alphabetically', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Trigger category callback
+            picker.setCategory('*');
+
+            // Skip the first category (which should be '*')
+            const sortedCategories = [...categoryCallbackData.slice(1)];
+
+            // Check if categories are sorted alphabetically
+            const isSorted = sortedCategories.every((category, index, array) => {
+
+                if (index === 0) return true;
+                return category.category.localeCompare(array[index - 1].category) >= 0;
+
+            });
+
+            assert.strictEqual(isSorted, true, 'Categories should be sorted alphabetically');
+
+        });
+
+    });
+
+    describe('Filtering Accuracy', () => {
+
+        it('should only include icons that match the filter', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Apply a specific filter
+            const filterTerm = 'chart';
+            picker.setFilter(filterTerm);
+
+            // Log the first few icons for debugging
+            console.log('First 3 icons after filtering:');
+            iconListCallbackData.slice(0, 3).forEach((icon) => {
+
+                console.log(`Icon: ${icon.icon}, Name: ${icon.name}, Tags: ${icon.tags.join(', ')}`);
+
+            });
+
+            // Verify all returned icons match the filter
+            let allMatch = true;
+            const nonMatchingIcons = [];
+
+            for (const icon of iconListCallbackData) {
+
+                const nameMatches = icon.name.toLowerCase().includes(filterTerm);
+                const tagMatches = icon.tags.some((tag) => tag.toLowerCase().includes(filterTerm));
+
+                if (!(nameMatches || tagMatches)) {
+
+                    allMatch = false;
+                    nonMatchingIcons.push(icon.icon);
+                    if (nonMatchingIcons.length < 5) { // Limit to 5 examples
+
+                        console.log(`Non-matching icon: ${icon.icon}, Name: ${icon.name}, Tags: ${icon.tags.join(', ')}`);
+
+                    }
+
+                }
+
+            }
+
+            if (!allMatch) {
+
+                console.log(`Found ${nonMatchingIcons.length} icons that don't match the filter '${filterTerm}'`);
+
+            }
+
+            // Now that filtering is fixed, we can assert that all icons match the filter
+            assert.strictEqual(allMatch, true, 'All icons should match the filter');
+
+        });
+
+        it('should only include icons from the selected category', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Select a specific category
+            const category = 'arrows';
+            picker.setCategory(category);
+
+            // Verify all returned icons belong to the category
+            const allIconsInCategory = iconListCallbackData.every((icon) => icon.categories.includes(category));
+
+            assert.strictEqual(allIconsInCategory, true, 'All icons should belong to the selected category');
+
+        });
+
+        it('should correctly filter icons by both category and filter', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Set category and filter
+            const category = 'arrows';
+            const filterTerm = 'down';
+
+            picker.setCategory(category);
+            picker.setFilter(filterTerm);
+
+            // Log the first few icons for debugging
+            console.log('First 3 icons after category and filter:');
+            iconListCallbackData.slice(0, 3).forEach((icon) => {
+
+                console.log(`Icon: ${icon.icon}, Name: ${icon.name}, Categories: ${icon.categories.join(', ')}, Tags: ${icon.tags.join(', ')}`);
+
+            });
+
+            // Verify all returned icons match both criteria
+            let allMatch = true;
+            const nonMatchingIcons = [];
+
+            for (const icon of iconListCallbackData) {
+
+                const inCategory = icon.categories.includes(category);
+                const nameMatches = icon.name.toLowerCase().includes(filterTerm);
+                const tagMatches = icon.tags.some((tag) => tag.toLowerCase().includes(filterTerm));
+
+                if (!(inCategory && (nameMatches || tagMatches))) {
+
+                    allMatch = false;
+                    nonMatchingIcons.push(icon.icon);
+                    if (nonMatchingIcons.length < 5) { // Limit to 5 examples
+
+                        console.log(`Non-matching icon: ${icon.icon}, In category: ${inCategory}, Name matches: ${nameMatches}, Tag matches: ${tagMatches}`);
+
+                    }
+
+                }
+
+            }
+
+            if (!allMatch) {
+
+                console.log(`Found ${nonMatchingIcons.length} icons that don't match both criteria`);
+
+            }
+
+            // Now that filtering is fixed, we can assert that all icons match both criteria
+            assert.strictEqual(allMatch, true, 'All icons should match both category and filter criteria');
 
         });
 

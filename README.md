@@ -214,6 +214,7 @@ const picker = lucidePick({
   categoryCallback: (categories) => {
     // Handle category list updates
     // categories is an array of { category, count } objects
+    // Note: '*' category is always first, other categories are sorted alphabetically
     console.log(categories);
   },
   
@@ -233,10 +234,12 @@ const picker = lucidePick({
 
 // Methods available on the picker instance
 picker.setCategory('design');     // Filter by category
-picker.setCategory('*');          // Show all categories (wildcard)
+picker.setCategory('*');          // Show all categories (wildcard - shows all icons)
 picker.setFilter('chart');        // Filter by tag or name (case-insensitive)
 picker.clearFilter();             // Clear all filters
 picker.getIcon('ArrowUp');        // Get metadata for a specific icon
+picker.getActiveCategory();       // Get the currently active category
+picker.getActiveFilter();         // Get the currently active filter string
 ```
 
 <a id="mssqlcdcupdatemasktobooleanarray"></a>

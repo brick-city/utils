@@ -61,7 +61,8 @@ const picker = lucidePick({
     // Handle category list updates
     // categories is an array of { category, count } objects
     console.log(categories);
-    // Example: [{ category: 'arrows', count: 24 }, { category: 'design', count: 18 }]
+    // Example: [{ category: '*', count: 1024 }, { category: 'arrows', count: 24 }, { category: 'design', count: 18 }]
+    // Note: '*' category is always first, other categories are sorted alphabetically
   },
   
   // Callback for icon list updates
@@ -81,10 +82,12 @@ const picker = lucidePick({
 
 // Methods available on the picker instance
 picker.setCategory('design');     // Filter by category
-picker.setCategory('*');          // Show all categories (wildcard)
+picker.setCategory('*');          // Show all categories (wildcard - shows all icons)
 picker.setFilter('chart');        // Filter by tag or name (case-insensitive)
 picker.clearFilter();             // Clear all filters
 picker.getIcon('ArrowUp');        // Get metadata for a specific icon
+picker.getActiveCategory();       // Get the currently active category
+picker.getActiveFilter();         // Get the currently active filter string
 ```
 
 ### Method Details
@@ -95,6 +98,7 @@ Sets the active category to filter icons by.
 
 - `category`: The icon category to select. Use `'*'` to select all categories.
 - Throws an error if the category is empty or not found.
+- The special `'*'` category represents all icons and is always listed first in the category list.
 
 #### `setFilter(tagFilter)`
 
@@ -114,6 +118,18 @@ Returns the icon metadata for the given icon name.
 
 - `icon`: The icon name in Pascal case (e.g., 'ArrowRight').
 - Returns `undefined` if the icon doesn't exist.
+
+#### `getActiveCategory()`
+
+Returns the currently active category.
+
+- Returns the string name of the active category, or `'*'` if all categories are selected.
+
+#### `getActiveFilter()`
+
+Returns the currently active filter string.
+
+- Returns the current filter string, or an empty string if no filter is applied.
 
 ## Generating Category Files
 

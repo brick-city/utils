@@ -186,10 +186,18 @@ export const lucidePick = ({
     const callbackCategoryList = () => {
 
         // Convert the filtered categories map to an array of category count objects
-        const filteredCategories = Array.from(lucideCategoriesFiltered, ([iconCategory, iconSet]) => ({
+        const filteredCategories = [...Array.from(lucideCategoriesFiltered, ([iconCategory, iconSet]) => ({
             category: iconCategory,
             count: iconSet.size,
-        }));
+        })), {
+            category: '*',
+            count: lucideIcons.size,
+        }].sort((a, b) => {
+
+            if (a.category === '*') return -1; // Always put '*' at the top
+            return a.category.localeCompare(b.category);
+
+        });
 
         // Invoke the callback with the category counts
         categoryCallback(filteredCategories);
@@ -204,17 +212,28 @@ export const lucidePick = ({
          */
         getIcon: (icon) => lucideIcons.get(icon),
 
+        getActiveCategory: () => currentCategory,
+
+        getActiveFilter: () => currentFilter,
+
         /**
          * @param {string} tagFilter - The tag filter string to apply
          * @description Filters icons by tags that include the given filter string
          */
         setFilter: (tagFilter) => {
 
-            // Store the lowercase version to avoid repeated toLowerCase() calls
-            const lowercaseFilter = tagFilter.toLowerCase();
+            // Update current filter state
+            currentFilter = tagFilter.toLowerCase();
+
+            if (currentFilter === '') {
+
+                // If filter is empty, reset to show all icons
+                return pick.clearFilter();
+
+            }
 
             // Find tags that match the filter
-            const filteredTags = lucideTags.filter((tag) => tag.includes(lowercaseFilter));
+            const filteredTags = lucideTags.filter((tag) => tag.includes(currentFilter));
 
             // Clear previous filtered icons
             filteredIcons.clear();
@@ -225,19 +244,29 @@ export const lucidePick = ({
                 const icons = lucideTagIcons.get(tag);
                 if (icons) {
 
-                    icons.forEach(filteredIcons.add, filteredIcons);
+                    icons.forEach((icon) => filteredIcons.add(icon));
 
                 }
 
             });
 
+            // Update filtered categories based on the new filter
             [...lucideCategoriesFiltered.keys()].forEach((cat) => {
 
-                // Implement Set intersection manually since it's not a native Set method
+                // Get all icons in this category
                 const categoryIcons = lucideCategories.get(cat);
 
-                // Convert filteredIcons to array, filter those in categoryIcons, then create a new Set
-                const intersection = new Set(Array.from(filteredIcons).filter((icon) => categoryIcons.has(icon)));
+                // Create intersection of filtered icons and category icons
+                const intersection = new Set();
+                filteredIcons.forEach((icon) => {
+
+                    if (categoryIcons.has(icon)) {
+
+                        intersection.add(icon);
+
+                    }
+
+                });
 
                 lucideCategoriesFiltered.set(cat, intersection);
 
@@ -246,6 +275,8 @@ export const lucidePick = ({
             callbackCategoryList();
             callbackIconList();
 
+            return undefined; // Explicit return to satisfy ESLint
+
         },
 
         /**
@@ -253,12 +284,13 @@ export const lucidePick = ({
          */
         clearFilter: () => {
 
+            // Reset current filter state
             currentFilter = '';
 
             filteredIcons.clear();
-            lucideCategoriesFiltered.clear();
 
-            // Create a new Map with copies of the original category sets
+            // Reset filtered categories to original categories
+            lucideCategoriesFiltered.clear();
             lucideCategories.forEach((iconSet, cat) => {
 
                 lucideCategoriesFiltered.set(cat, new Set(iconSet));
