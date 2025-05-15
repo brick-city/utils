@@ -1,3 +1,7 @@
+/* eslint-disable no-console */
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
+// @ts-nocheck
 // Script to split lucide-metadata.json into category-based files
 import fs from 'fs';
 import path from 'path';
@@ -13,6 +17,7 @@ const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
 
 // Get all unique primary categories
 const categories = new Set();
+// @ts-ignore
 metadata.forEach((icon) => {
 
     if (icon.categories && icon.categories.length > 0) {
@@ -29,15 +34,18 @@ console.log(`Found ${categories.size} unique primary categories`);
 const categoryIcons = {};
 categories.forEach((category) => {
 
+    // @ts-ignore
     categoryIcons[category] = [];
 
 });
 
+// @ts-ignore
 metadata.forEach((icon) => {
 
     if (icon.categories && icon.categories.length > 0) {
 
         const primaryCategory = icon.categories[0];
+        // @ts-ignore
         categoryIcons[primaryCategory].push(icon);
 
     }
@@ -55,11 +63,13 @@ if (!fs.existsSync(categoryDir)) {
 // Write each category to a separate file
 categories.forEach((category) => {
 
+    // @ts-ignore
     const icons = categoryIcons[category];
     const fileName = `${category.replace(/[^a-zA-Z0-9]/g, '-')}.js`;
     const filePath = path.join(categoryDir, fileName);
 
     // Format the icons array with proper indentation and line breaks
+    // @ts-ignore
     const formattedIcons = icons.map((icon, index) => {
 
         // Format each icon object according to project style
