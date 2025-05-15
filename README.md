@@ -18,20 +18,20 @@ npm install --save @brick-city/utils
 
 
 ## Usage
-- [acHelper](#acheperabortcontroller) A little abort controller helper
-- [asciiCaseInsensitiveRegex](#asciicaseinsensitiveregexstrstring) Pass a string, return a regex that matches ascii letters with case insensitivity, does not use /i
-- [arrayToString](#arraytostringarrstring) Nicely format an array for display
-- [deepFreeze](#deepfreezeobjectobject) Deep freeze an object and avoid buffers
-- [isPlainObject](#isplainobjectobjanyboolean) Check if an object is a plain object 
-- [isPlainObjectEmpty](#isplainobjectemptyobjanyboolean) Check if an object is a plain object, and is empty
-- [isRegex](#isregexobjanyboolean) Check if the passed value is a regular expression  
-- [isUndefinedOrNull](#isundefinedornullvalueanyboolean) Check for an undefined or null value
-- [lucidePick](#lucidepickcategorycallback-iconlistcallback-initialcategory-initialfilter) A utility for filtering and selecting Lucide icons by category, name, or tags
-- [mssqlCdcUpdateMaskToBooleanArray](#mssqlcdcupdatemasktobooleanarrayupdatemaskbufferarrayboolean) Converts an mssql change data capture update mask to an array of boolean 
-- [mssqlCdcUpdateMaskToBitArray](#mssqlcdcupdatemasktobitarrayupdatemaskbufferarrayboolean) Converts an mssql change data capture update mask to an array of bits
+- [acHelper](#achelper) A little abort controller helper
+- [asciiCaseInsensitiveRegex](#asciicaseinsensitiveregex) Pass a string, return a regex that matches ascii letters with case insensitivity, does not use /i
+- [arrayToString](#arraytostring) Nicely format an array for display
+- [deepFreeze](#deepfreeze) Deep freeze an object and avoid buffers
+- [isPlainObject](#isplainobject) Check if an object is a plain object 
+- [isPlainObjectEmpty](#isplainobjectempty) Check if an object is a plain object, and is empty
+- [isRegex](#isregex) Check if the passed value is a regular expression  
+- [isUndefinedOrNull](#isundefinedornull) Check for an undefined or null value
+- [lucidePick](#lucidepick) A utility for filtering and selecting Lucide icons by category, name, or tags
+- [mssqlCdcUpdateMaskToBooleanArray](#mssqlcdcupdatemasktobooleanarray) Converts an mssql change data capture update mask to an array of boolean 
+- [mssqlCdcUpdateMaskToBitArray](#mssqlcdcupdatemasktobitarray) Converts an mssql change data capture update mask to an array of bits
 - [noopLogger](#nooplogger) A pino structured no-op logger
-- [traceLogger](#traceloggerloggerloggerfunction) Generates trace messages, and posts them to the provided logger
-- [zeroPaddedBinary](#zeropaddedbinaryintegernumberstring) Nicely format a number as a binary
+- [traceLogger](#tracelogger) Generates trace messages, and posts them to the provided logger
+- [zeroPaddedBinary](#zeropaddedbinary) Nicely format a number as a binary
 
 ### `acHelper({signal: AbortSignal | AbortSignal[], timeout?: number, abortCallback: EventListener}):AbortController`
 
