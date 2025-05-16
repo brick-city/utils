@@ -115,25 +115,117 @@ const lucideTags = [...lucideTagIcons.keys()];
  */
 
 export const lucidePick = ({
-    iconListCallback, categoryCallback, initialCategory, initialFilter,
+    iconListCallback, categoryCallback, initialCategory = '*', initialFilter,
 }) => {
 
-    // Set to store icons that match the current filter
-    const filteredIcons = new Set();
+    let currentFilter = ''; // Currently active filter
+    let currentCategory = ''; // Currently selected category
+    let filteredIcons = new Set(); // Currently filtered icons
+    const lucideCategoriesFiltered = new Map(); // Map to store filtered icons by category
 
-    // Map to store filtered icons by category
-    const lucideCategoriesFiltered = new Map();
+    /**
+     * @description Clears any active filters and resets to show all icons
+     */
+    const clearFilter = () => { // Reset current filter state
 
-    // Initialize filtered categories with copies of the original sets
-    lucideCategories.forEach((iconSet, cat) => {
+        currentFilter = '';
 
-        lucideCategoriesFiltered.set(cat, new Set(iconSet));
+        filteredIcons = new Set(lucideIcons.values());
 
-    });
+        // Reset filtered categories to original categories
+        lucideCategoriesFiltered.clear();
+        lucideCategories.forEach((iconSet, cat) => {
 
-    // Track current filter state
-    let currentCategory = initialCategory || '*';
-    let currentFilter = initialFilter?.trim() || '';
+            lucideCategoriesFiltered.set(cat, new Set(iconSet));
+
+        });
+
+    };
+
+    /**
+     * @param {string} tagFilter - The tag filter string to apply
+     * @description Filters icons by tags that include the given filter string
+     */
+    const setFilter = (tagFilter) => {
+
+        // Update current filter state
+        currentFilter = tagFilter?.toLowerCase()?.trim() || '';
+
+        if (currentFilter === '') {
+
+            // If filter is empty, reset to show all icons
+            clearFilter();
+
+        } else {
+
+            // Find tags that match the filter
+            const filteredTags = lucideTags.filter((tag) => tag.includes(currentFilter));
+
+            // Clear previous filtered icons
+            filteredIcons.clear();
+
+            // Add all icons from matching tags to the filtered set
+            filteredTags.forEach((tag) => {
+
+                const icons = lucideTagIcons.get(tag);
+                if (icons) {
+
+                    icons.forEach((icon) => filteredIcons.add(icon));
+
+                }
+
+            });
+
+            // Update filtered categories based on the new filter
+            [...lucideCategoriesFiltered.keys()].forEach((cat) => {
+
+                // Get all icons in this category
+                const categoryIcons = lucideCategories.get(cat);
+
+                // Create intersection of filtered icons and category icons
+                const intersection = new Set();
+                filteredIcons.forEach((icon) => {
+
+                    if (categoryIcons.has(icon)) {
+
+                        intersection.add(icon);
+
+                    }
+
+                });
+
+                lucideCategoriesFiltered.set(cat, intersection);
+
+            });
+
+        }
+
+    };
+
+    /**
+     * @param {string} category - The icon category to select, passing '*' will select all categories
+     * @description Sets the active category to filter icons by
+     * @throws {Error} If the category is empty or not found
+     */
+    const setCategory = (category) => {
+
+        // Validate category parameter
+        if (!category || category.trim() === '') {
+
+            throw new Error('Category cannot be empty');
+
+        }
+
+        // Special case for '*' (all categories)
+        if (category !== '*' && !lucideCategories.has(category)) {
+
+            throw new Error(`Category "${category}" not found`);
+
+        }
+
+        currentCategory = category;
+
+    };
 
     /**
      * @description Helper function to sort icons by name
@@ -151,22 +243,7 @@ export const lucidePick = ({
 
         if (currentCategory === '*') {
 
-            if (currentFilter === '') {
-
-                // No filtering, use the metadata but ensure it's sorted
-                iconsToDisplay = sortIconsByName([...metadata]);
-
-            } else {
-
-                // Filter by tag/name only
-                iconsToDisplay = sortIconsByName([...filteredIcons.values()]);
-
-            }
-
-        } else if (currentFilter === '') {
-
-            // Filter by category only
-            iconsToDisplay = sortIconsByName([...lucideCategories.get(currentCategory)]);
+            iconsToDisplay = sortIconsByName([...filteredIcons.values()]);
 
         } else {
 
@@ -222,60 +299,10 @@ export const lucidePick = ({
          */
         setFilter: (tagFilter) => {
 
-            // Update current filter state
-            currentFilter = tagFilter.toLowerCase();
-
-            if (currentFilter === '') {
-
-                // If filter is empty, reset to show all icons
-                return pick.clearFilter();
-
-            }
-
-            // Find tags that match the filter
-            const filteredTags = lucideTags.filter((tag) => tag.includes(currentFilter));
-
-            // Clear previous filtered icons
-            filteredIcons.clear();
-
-            // Add all icons from matching tags to the filtered set
-            filteredTags.forEach((tag) => {
-
-                const icons = lucideTagIcons.get(tag);
-                if (icons) {
-
-                    icons.forEach((icon) => filteredIcons.add(icon));
-
-                }
-
-            });
-
-            // Update filtered categories based on the new filter
-            [...lucideCategoriesFiltered.keys()].forEach((cat) => {
-
-                // Get all icons in this category
-                const categoryIcons = lucideCategories.get(cat);
-
-                // Create intersection of filtered icons and category icons
-                const intersection = new Set();
-                filteredIcons.forEach((icon) => {
-
-                    if (categoryIcons.has(icon)) {
-
-                        intersection.add(icon);
-
-                    }
-
-                });
-
-                lucideCategoriesFiltered.set(cat, intersection);
-
-            });
+            setFilter(tagFilter);
 
             callbackCategoryList();
             callbackIconList();
-
-            return undefined; // Explicit return to satisfy ESLint
 
         },
 
@@ -284,18 +311,7 @@ export const lucidePick = ({
          */
         clearFilter: () => {
 
-            // Reset current filter state
-            currentFilter = '';
-
-            filteredIcons.clear();
-
-            // Reset filtered categories to original categories
-            lucideCategoriesFiltered.clear();
-            lucideCategories.forEach((iconSet, cat) => {
-
-                lucideCategoriesFiltered.set(cat, new Set(iconSet));
-
-            });
+            clearFilter();
 
             callbackCategoryList();
             callbackIconList();
@@ -309,28 +325,19 @@ export const lucidePick = ({
          */
         setCategory: (category) => {
 
-            // Validate category parameter
-            if (!category || category.trim() === '') {
+            setCategory(category);
 
-                throw new Error('Category cannot be empty');
-
-            }
-
-            // Special case for '*' (all categories)
-            if (category !== '*' && !lucideCategories.has(category)) {
-
-                throw new Error(`Category "${category}" not found`);
-
-            }
-
-            currentCategory = category;
-
-            callbackCategoryList();
             callbackIconList();
 
         },
 
     };
+
+    setFilter(initialFilter);
+    setCategory(initialCategory);
+
+    callbackCategoryList();
+    callbackIconList();
 
     return pick;
 

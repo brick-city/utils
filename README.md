@@ -203,7 +203,7 @@ isUndefinedOrNull(7) // false
 <a id="lucidepick"></a>
 ### `lucidePick({categoryCallback, iconListCallback, initialCategory, initialFilter})`
 
-lucidePick is a utility for filtering and selecting Lucide icons by category, name, or tags. It uses a category-based approach for metadata loading to improve performance and reduce memory usage.
+lucidePick is a utility for filtering and selecting Lucide icons by category, name, or tags. It uses a category-based approach for metadata loading to improve performance and reduce memory usage. Upon creation of a new picker, the callbacks for categoryCallback and iconListCallback will be called after the initial filter and category are set.
 
 ```javascript
 import { lucidePick } from '@brick-city/utils';

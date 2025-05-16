@@ -81,6 +81,8 @@ const picker = lucidePick({
   initialFilter: 'direction'
 });
 
+// Upon creation of a new picker, the callbacks for categoryCallback and iconListCallback will be called after the initial filter and category are set.
+
 // Methods available on the picker instance
 picker.setCategory('design');     // Filter by category
 picker.setCategory('*');          // Show all categories (wildcard - shows all icons)
