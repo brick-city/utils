@@ -63,12 +63,13 @@ const picker = lucidePick({
     console.log(categories);
     // Example: [{ category: '*', count: 1024 }, { category: 'arrows', count: 24 }, { category: 'design', count: 18 }]
     // Note: '*' category is always first, other categories are sorted alphabetically
+    // The count for the '*' category represents the total number of icons matching the current filter
   },
   
   // Callback for icon list updates
   iconListCallback: (icons) => {
     // Handle icon list updates
-    // icons is an array of icon metadata objects
+    // icons is an array of icon metadata objects sorted alphabetically by name
     console.log(icons);
     // Example: [{ icon: 'ArrowUp', name: 'arrow-up', tags: [...], categories: [...] }]
   },
@@ -145,9 +146,23 @@ This will:
 3. Create a separate file for each category in the `categories/` directory
 4. Generate the `lucide-metadata-combined.js` file that imports all categories
 
+## Sorting Behavior
+
+LucidePick ensures consistent sorting of both categories and icons:
+
+- **Category Sorting**: 
+  - The special `'*'` category (representing all icons) is always placed first in the category list.
+  - All other categories are sorted alphabetically.
+  - The count for the `'*'` category represents the total number of icons matching the current filter.
+
+- **Icon Sorting**:
+  - Icons are always returned sorted alphabetically by name (the Pascal case `icon` property).
+  - This sorting is applied consistently in all scenarios: when viewing all icons, when filtering by category, and when filtering by search term.
+
 ## Benefits
 
 - **Reduced Memory Usage**: By splitting the metadata into smaller files, the JavaScript engine can better optimize memory usage.
 - **Improved Performance**: Loading smaller chunks of data is faster than loading one large file.
 - **Better AI Compatibility**: The smaller files are more compatible with AI tools that might struggle with large JSON files.
 - **Efficient Filtering**: The use of Maps and Sets provides efficient filtering and lookup operations.
+- **Consistent Ordering**: The predictable sorting of categories and icons improves user experience and makes UI implementation simpler.
