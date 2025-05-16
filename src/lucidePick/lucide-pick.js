@@ -175,7 +175,7 @@ export const lucidePick = ({
 
         }
 
-        iconListCallback(iconsToDisplay);
+        iconListCallback(structuredClone(iconsToDisplay));
 
     };
 
@@ -191,7 +191,7 @@ export const lucidePick = ({
             count: iconSet.size,
         })), {
             category: '*',
-            count: lucideIcons.size,
+            count: filteredIcons.size,
         }].sort((a, b) => {
 
             if (a.category === '*') return -1; // Always put '*' at the top

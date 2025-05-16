@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-restricted-syntax */
 import assert from 'node:assert';
 import { describe, it, beforeEach } from 'node:test';
 import { lucidePick } from './lucide-pick.js';
