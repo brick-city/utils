@@ -447,6 +447,76 @@ describe('lucidePick', () => {
 
     });
 
+    describe('Icon Sorting', () => {
+
+        it('should return icons sorted by name', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Trigger icon list callback
+            picker.setCategory('*');
+
+            // Check if icons are sorted alphabetically by name
+            const isSorted = iconListCallbackData.every((icon, index, array) => {
+
+                if (index === 0) return true;
+                return icon.icon.localeCompare(array[index - 1].icon) >= 0;
+
+            });
+
+            assert.strictEqual(isSorted, true, 'Icons should be sorted alphabetically by name');
+
+        });
+
+        it('should return sorted icons when filtering by category', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Set a specific category
+            picker.setCategory('arrows');
+
+            // Check if icons are sorted alphabetically by name
+            const isSorted = iconListCallbackData.every((icon, index, array) => {
+
+                if (index === 0) return true;
+                return icon.icon.localeCompare(array[index - 1].icon) >= 0;
+
+            });
+
+            assert.strictEqual(isSorted, true, 'Icons should be sorted alphabetically by name when filtered by category');
+
+        });
+
+        it('should return sorted icons when filtering by search term', () => {
+
+            const picker = lucidePick({
+                iconListCallback,
+                categoryCallback,
+            });
+
+            // Apply a filter
+            picker.setFilter('arrow');
+
+            // Check if icons are sorted alphabetically by name
+            const isSorted = iconListCallbackData.every((icon, index, array) => {
+
+                if (index === 0) return true;
+                return icon.icon.localeCompare(array[index - 1].icon) >= 0;
+
+            });
+
+            assert.strictEqual(isSorted, true, 'Icons should be sorted alphabetically by name when filtered by search term');
+
+        });
+
+    });
+
     describe('Filtering Accuracy', () => {
 
         it('should only include icons that match the filter', () => {

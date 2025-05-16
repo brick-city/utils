@@ -153,8 +153,8 @@ export const lucidePick = ({
 
             if (currentFilter === '') {
 
-                // No filtering, use the pre-sorted metadata
-                iconsToDisplay = metadata;
+                // No filtering, use the metadata but ensure it's sorted
+                iconsToDisplay = sortIconsByName([...metadata]);
 
             } else {
 
