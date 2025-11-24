@@ -22,6 +22,8 @@ npm install --save @brick-city/utils
 - [asciiCaseInsensitiveRegex](#asciicaseinsensitiveregex) Pass a string, return a regex that matches ascii letters with case insensitivity, does not use /i
 - [arrayToString](#arraytostring) Nicely format an array for display
 - [deepFreeze](#deepfreeze) Deep freeze an object and avoid buffers
+- [isDate](#isdate) Check if the passed value is a Date object
+- [isDateValid](#isdatevalid) Check if the passed value is a valid Date object
 - [isPlainObject](#isplainobject) Check if an object is a plain object 
 - [isPlainObjectEmpty](#isplainobjectempty) Check if an object is a plain object, and is empty
 - [isRegex](#isregex) Check if the passed value is a regular expression  
@@ -123,6 +125,46 @@ deepFreeze takes an object and recursively walks down the object's own propertie
 import { deepFreeze } from '@brick-city/utils';
 
 deepFreeze(object)
+
+```
+
+<a id="isdate"></a>
+### `isDate(value:any):boolean`
+
+isDate returns a boolean that indicates if the value is a Date object. It checks only the type using instanceof Date, without validating the timestamp. Even invalid dates like new Date('invalid') will return true since they are still Date instances.
+
+```javascript
+import { isDate } from '@brick-city/utils';
+
+isDate(new Date()) // true
+isDate(new Date('2025-01-01')) // true
+isDate(new Date(0)) // true
+isDate(new Date('invalid')) // true (Invalid Date object, but still a Date instance)
+isDate({}) // false
+isDate(null) // false
+isDate(undefined) // false
+isDate('2025-01-01') // false
+isDate(1234567890) // false
+
+```
+
+<a id="isdatevalid"></a>
+### `isDateValid(value:any):boolean`
+
+isDateValid returns a boolean that indicates if the value is a valid Date object. A Date is considered valid if it is an instance of the Date constructor AND has a valid timestamp (not NaN). This properly rejects invalid date strings.
+
+```javascript
+import { isDateValid } from '@brick-city/utils';
+
+isDateValid(new Date()) // true
+isDateValid(new Date('2025-01-01')) // true
+isDateValid(new Date(0)) // true
+isDateValid(new Date('invalid')) // false (Invalid Date object, NaN timestamp)
+isDateValid({}) // false
+isDateValid(null) // false
+isDateValid(undefined) // false
+isDateValid('2025-01-01') // false
+isDateValid(1234567890) // false
 
 ```
 
